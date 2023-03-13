@@ -95,9 +95,6 @@
   "Unlit.": "Unlit.",
 
   "block-woodrack-*": "Wood drying rack",
-  "blockhelp-woodrack-rightclick": "Load up completely to begin drying.", // this should be block info
-  "blockhelp-woodrack-rightclick-wait": "Wait for drying to complete.",
-  "blockhelp-woodrack-rightclick-unload": "Unload",
 
   "block-steamcabinet-open-*": "Steaming cabinet (Open)",
   "block-steamcabinet-closed-*": "Steaming cabinet",
