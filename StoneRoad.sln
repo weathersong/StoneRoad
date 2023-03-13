@@ -1,0 +1,42 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.33414.496
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StoneRoad", "StoneRoad.csproj", "{B19CD79E-C5EB-46F7-AA31-F80389AF6DFE}"
+EndProject
+Project("{911E67C6-3D85-4FCE-B560-20A9C3E3FF48}") = "Vintagestory", "C:\Vintagestory\Vintagestory.exe", "{AD395F58-FA2A-4663-845C-7EF65FA4C7B9}"
+	ProjectSection(DebuggerProjectSystem) = preProject
+		PortSupplier = 00000000-0000-0000-0000-000000000000
+		Executable = C:\Vintagestory\Vintagestory.exe
+		RemoteMachine = TEG
+		StartingDirectory = C:\Vintagestory
+		Arguments = -oTestStoneRoad -pcreativebuilding --addModPath="D:\Games\Vintage Story\StoneRoad\Mods"
+		Environment = Default
+		LaunchingEngine = 00000000-0000-0000-0000-000000000000
+		UseLegacyDebugEngines = No
+		LaunchSQLEngine = No
+		AttachLaunchAction = No
+		IORedirection = Auto
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B19CD79E-C5EB-46F7-AA31-F80389AF6DFE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B19CD79E-C5EB-46F7-AA31-F80389AF6DFE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B19CD79E-C5EB-46F7-AA31-F80389AF6DFE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B19CD79E-C5EB-46F7-AA31-F80389AF6DFE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AD395F58-FA2A-4663-845C-7EF65FA4C7B9}.Debug|Any CPU.ActiveCfg = Release|Any CPU
+		{AD395F58-FA2A-4663-845C-7EF65FA4C7B9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {A91A62F2-FE3C-449C-9DF2-C8C84E02C819}
+	EndGlobalSection
+EndGlobal

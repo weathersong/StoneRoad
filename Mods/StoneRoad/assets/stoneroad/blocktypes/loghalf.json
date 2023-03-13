@@ -1,0 +1,160 @@
+{
+  "code": "loghalf",
+  "class": "BlockLogHalf",
+
+  "variantgroups": [
+    {
+      "code": "wood",
+      "states": [ "aged" ],
+      "loadFromProperties": "block/wood"
+    },
+    {
+      "code": "rotation",
+      "loadFromProperties": "abstract/horizontalorientation"
+    }
+  ],
+
+  "attributes": {
+    "handbook": {
+      "groupBy": [ "loghalf-{wood}-*" ]
+    }
+  },
+  "creativeinventory": {
+    "general": [ "loghalf-*-north" ],
+    "construction": [ "loghalf-*-north" ]
+  },
+
+  "drawtype": "json",
+  "shapebytype": {
+    "*-north": {
+      "base": "block/loghalf",
+      "rotateY": 90
+    },
+    "*-east": {
+      "base": "block/loghalf",
+      "rotateY": 0
+    },
+    "*-south": {
+      "base": "block/loghalf",
+      "rotateY": 270
+    },
+    "*-west": {
+      "base": "block/loghalf",
+      "rotateY": 180
+    }
+  },
+  "texturesByType": {
+    "*": {
+      "bark": { "base": "game:block/wood/bark/{wood}" },
+      "inside": { "base": "game:block/wood/debarked/{wood}" },
+      "ends": { "base": "game:block/wood/treetrunk/{wood}" }
+    }
+  },
+  "sidesolid": { "all": false },
+  "sideopaque": { "all": false },
+
+  "blockmaterial": "Wood",
+  "requiredMiningTier": 1,
+  "replaceable": 500,
+  "resistance": 4.5,
+
+  "sounds": {
+    "place": "game:block/planks",
+    "walk": "game:walk/wood",
+    "hit": "game:block/planks",
+    "break": "game:block/planks",
+    "byTool": {
+      "Axe": {
+        "hit": "game:block/chop",
+        "break": "game:block/planks"
+      }
+    }
+  },
+
+  "drops": [
+    {
+      "type": "block",
+      "code": "loghalf-{wood}-north",
+      "quantity": { "avg": 1 }
+    }
+  ],
+
+  "combustiblePropsByType": {
+    "loghalf-birch-*": {
+      "burnTemperature": 800,
+      "burnDuration": 38
+    },
+    "loghalf-oak-*": {
+      "burnTemperature": 800,
+      "burnDuration": 48
+    },
+    "loghalf-ebony-*": {
+      "burnTemperature": 800,
+      "burnDuration": 110
+    },
+    "loghalf-pine-*": {
+      "burnTemperature": 800,
+      "burnDuration": 29
+    },
+    "loghalf-acacia-*": {
+      "burnTemperature": 800,
+      "burnDuration": 44
+    },
+    "loghalf-kapok-*": {
+      "burnTemperature": 800,
+      "burnDuration": 23
+    },
+    "loghalf-maple-*": {
+      "burnTemperature": 800,
+      "burnDuration": 39
+    },
+    "loghalf-redwood-*": {
+      "burnTemperature": 800,
+      "burnDuration": 35
+    },
+    "loghalf-aged-*": {
+      "burnTemperature": 700,
+      "burnDuration": 19
+    },
+    "*": {
+      "burnTemperature": 800,
+      "burnDuration": 35
+    }
+  },
+
+  "maxStackSize": 16,
+  "materialDensity": 700,
+  "heldTpIdleAnimation": "holdbothhandslarge",
+  "heldTpUseAnimation": "twohandplaceblock",
+  "tpHandTransform": {
+    "translation": {
+      "x": -1.23,
+      "y": -0.91,
+      "z": -0.8
+    },
+    "rotation": {
+      "x": -2,
+      "y": 25,
+      "z": -78
+    },
+    "scale": 0.4
+  },
+
+  "collisionSelectionBoxByType": {
+    "*": {
+      "x1": 0,
+      "y1": 0,
+      "z1": 0,
+      "x2": 0.5,
+      "y2": 1,
+      "z2": 1,
+      "rotateYByType": {
+        "*-north": 90,
+        "*-east": 0,
+        "*-south": 270,
+        "*-west": 180
+      }
+    }
+  }
+
+}

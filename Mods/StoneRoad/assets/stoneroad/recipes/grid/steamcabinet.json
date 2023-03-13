@@ -1,0 +1,30 @@
+{
+  "ingredientPattern": "TTT,S_S,BBB",
+  "ingredients": {
+    "T": {
+      "type": "block",
+      "code": "uncuredplank-raw-*",
+      "name": "wood",
+      "quantity": 2
+    },
+    "S": {
+      "type": "block",
+      "code": "uncuredplank-raw-*",
+      "name": "wood",
+      "quantity": 3
+    },
+    "B": {
+      "type": "block",
+      "code": "game:cobblestone-*",
+      "name": "stone"
+    }
+  },
+  "width": 3,
+  "height": 3,
+  "shapeless": false,
+  "output": {
+    "type": "block",
+    "code": "stoneroad:steamcabinet-closed-north",
+    "quantity": 1
+  }
+}

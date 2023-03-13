@@ -1,0 +1,15 @@
+[
+  {
+    "op": "add",
+    "path": "/attributes/buildMats/fuel/-",
+    "value": {
+      "type": "item",
+      "code": "stoneroad:charcoal-poor",
+      "quantity": 1,
+      "eleCode": "Coal",
+      "textureCodeReplace": { "from": "coal", "to": "charcoal" },
+      "burnTimeHours": 16
+    },
+    "file": "game:blocktypes/wood/pitkiln.json"
+  }
+]

@@ -1,0 +1,9 @@
+[
+  {
+    "op": "replace",
+    "path": "/combustibleProps/burnTemperature",
+    "value": 900,
+    "file": "ancienttools:itemtypes/resources/powderedcharcoal.json",
+    "dependsOn": [ {"modid": "ancienttools"} ]
+  }
+]

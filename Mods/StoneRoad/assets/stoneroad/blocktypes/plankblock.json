@@ -1,0 +1,22 @@
+{
+  "__comment": "A block version of the uncured plank / lumber, to make OnTesselation easier, due to variants / textures.",
+  "code": "plankblock",
+  "class": "Block",
+  "variantgroups": [
+    {
+      "code": "wood",
+      "states": [ "aged" ],
+      "loadFromProperties": "block/wood"
+    }
+  ],
+
+  "shape": { "base": "item/plank" },
+  "textures": {
+    "wood": { "base": "game:block/wood/planks/{wood}1" }
+  },
+  "drawtype": "json",
+  "sidesolid": { "all": false },
+  "sideopaque": { "all": false },
+  "lightAbsorption": 0
+
+}

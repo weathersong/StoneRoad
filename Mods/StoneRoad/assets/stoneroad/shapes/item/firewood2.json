@@ -1,0 +1,42 @@
+{
+	"editor": {
+		"allAngles": false,
+		"entityTextureMode": false
+	},
+	"textureWidth": 16,
+	"textureHeight": 16,
+	"textureSizes": {
+	},
+	"textures": {
+		"firewoodfront": "game:block/wood/firewood/front",
+		"firewoodside": "game:block/wood/firewood/side"
+	},
+	"elements": [
+		{
+			"name": "Log1",
+			"from": [ 0.0, 0.0, 0.0 ],
+			"to": [ 4.0, 4.0, 16.0 ],
+			"faces": {
+				"north": { "texture": "#firewoodfront", "uv": [ 12.0, 12.0, 16.0, 16.0 ] },
+				"east": { "texture": "#firewoodside", "uv": [ 0.0, 0.0, 4.0, 16.0 ], "rotation": 90 },
+				"south": { "texture": "#firewoodfront", "uv": [ 8.0, 4.0, 12.0, 8.0 ] },
+				"west": { "texture": "#firewoodside", "uv": [ 0.0, 0.0, 4.0, 16.0 ], "rotation": 90 },
+				"up": { "texture": "#firewoodside", "uv": [ 0.0, 0.0, 4.0, 16.0 ] },
+				"down": { "texture": "#firewoodside", "uv": [ 0.0, 0.0, 4.0, 16.0 ] }
+			}
+		},
+		{
+			"name": "Log2",
+			"from": [ 0.0, 4.0, 0.0 ],
+			"to": [ 4.0, 8.0, 16.0 ],
+			"rotationOrigin": [ 0.0, 4.0, 0.0 ],
+			"faces": {
+				"north": { "texture": "#firewoodfront", "uv": [ 12.0, 12.0, 16.0, 16.0 ] },
+				"east": { "texture": "#firewoodside", "uv": [ 0.0, 0.0, 4.0, 16.0 ], "rotation": 90 },
+				"south": { "texture": "#firewoodfront", "uv": [ 8.0, 4.0, 12.0, 8.0 ] },
+				"west": { "texture": "#firewoodside", "uv": [ 0.0, 0.0, 4.0, 16.0 ], "rotation": 90 },
+				"up": { "texture": "#firewoodside", "uv": [ 0.0, 0.0, 4.0, 16.0 ] },
+				"down": { "texture": "#firewoodside", "uv": [ 0.0, 0.0, 4.0, 16.0 ] }
+			}
+		}
+	]}
