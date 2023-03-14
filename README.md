@@ -9,7 +9,7 @@ Roughly, here are the changes and the progression path to copper age:
 
 * **Wood is no longer chopped in the grid to produce firewood.**
 Instead, make a chopping block, using an axe and knife and log. Set it down, then "load" it by holding a log in hands and right-clicking. Now switch to either an axe, or an adze, and *right-click* to either chop or hew the log. This produces firewood, bark, and *lumber*.
-There is also no longer a recipe to saw logs into planks.
+You may also further chop firewood into sticks, as a convenience. Note that there is no longer a recipe to saw logs into planks, so this is the only path toward producing them.
 
 * **Firewood and lumber must be aged.**
 Create a drying rack using a few pieces of raw lumber made from the chopping block. Load it up with either firewood or raw lumber or both. It then takes some time to dry (cure), which is configurable.

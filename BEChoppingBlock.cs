@@ -74,7 +74,17 @@ namespace StoneRoad
 			}
 
 			// Place down a stripped log
-			else if (playerPath.StartsWith("strippedlog-"))
+			else if (playerPath.StartsWith("strippedlog-") && IsInventoryEmpty)
+			{
+				Api.World.PlaySoundAt(logSound, blockSel.Position.X, blockSel.Position.Y, blockSel.Position.Z, byPlayer);
+
+				BEChoppingBlock be = ToggleContentState();
+				if (be != null)
+					return be.TryPut(playerSlot);
+			}
+
+			// Place down firewood
+			else if (playerPath.StartsWith("firewood") && IsInventoryEmpty)
 			{
 				Api.World.PlaySoundAt(logSound, blockSel.Position.X, blockSel.Position.Y, blockSel.Position.Z, byPlayer);
 
@@ -137,6 +147,20 @@ namespace StoneRoad
 				AssetLocation dropAsset = new AssetLocation("stoneroad", $"uncuredplank-raw-{wood}");
 				if (dropAsset != null)
 					for (int i = 0; i < 8; i++)
+						this.Api.World.SpawnItemEntity(new ItemStack(this.Api.World.GetItem(dropAsset)), this.Pos.ToVec3d().Add(0.5, 1.0 + (i / 10), 0.5));
+
+				return true;
+			}
+
+			// Chop (either) firewood into sticks
+			else if ( (playerPath.StartsWith("axe-") || playerPath.StartsWith("adze-") || playerPath.StartsWith("knife-") ) && blockPath.StartsWith("firewood"))
+			{
+				playerStack.Collectible.DamageItem(this.Api.World, byPlayer.Entity, playerSlot, 3);
+				Api.World.PlaySoundAt(logSound, blockSel.Position.X, blockSel.Position.Y, blockSel.Position.Z, byPlayer);
+				ToggleContentState();
+				AssetLocation dropAsset = new AssetLocation("stick");
+				if (dropAsset != null)
+					for (int i = 0; i < 3; i++)
 						this.Api.World.SpawnItemEntity(new ItemStack(this.Api.World.GetItem(dropAsset)), this.Pos.ToVec3d().Add(0.5, 1.0 + (i / 10), 0.5));
 
 				return true;
@@ -241,10 +265,10 @@ namespace StoneRoad
 			path = path.Contains("-empty-") ? path.Replace("empty", "log") : path.Replace("log", "empty");
 
 			block = Api.World.GetBlock(block.CodeWithPath(path));
-			BlockPos pos = this.Pos.Copy();
+			BlockPos pos = Pos.Copy();
 			Api.World.BlockAccessor.SetBlock(block.BlockId, pos);
 
-			this.MarkDirty(true);
+			MarkDirty(true);
 
 			return Api.World.BlockAccessor.GetBlockEntity(pos) as BEChoppingBlock;
 		}
@@ -256,10 +280,10 @@ namespace StoneRoad
 			//this.IsBurning = tree.GetInt("burning") > 0;
 			//this.burningUntilTotalDays = tree.GetDouble("burningUntilTotalDays");
 			//this.burningStartTotalDays = tree.GetDouble("burningStartTotalDays");
-			if (this.Api != null)
+			if (Api != null)
 			{
-				if (this.Api.Side == EnumAppSide.Client)
-				{ this.Api.World.BlockAccessor.MarkBlockDirty(this.Pos); }
+				if (Api.Side == EnumAppSide.Client)
+					Api.World.BlockAccessor.MarkBlockDirty(this.Pos);
 			}
 		}
 
@@ -312,9 +336,15 @@ namespace StoneRoad
 				mesh.Translate(-0.05f, 0.33f, 0f);
 				mesh.Scale(new Vec3f(0.5f, 0, 0.5f), 0.75f, 0.75f, 0.75f);
 			}
+			else if (lumberSlot.Collectible.Code.Path.StartsWith("firewood"))
+			{
+				mesh.Rotate(new Vec3f(0f, 0f, 0f), -90 * GameMath.DEG2RAD, 0, 15 * GameMath.DEG2RAD);
+				mesh.Translate(0f, 0.33f, 0.7f);
+				mesh.Scale(new Vec3f(0.5f, 0, 0.5f), 0.75f, 0.75f, 0.75f);
+			}
 
 			// Chopping block's own orientation
-			mesh.Rotate(new Vec3f(0.5f, 0, 0.5f), 0, this.Block.Shape.rotateY * GameMath.DEG2RAD, 0);
+			mesh.Rotate(new Vec3f(0.5f, 0, 0.5f), 0, Block.Shape.rotateY * GameMath.DEG2RAD, 0);
 
 			return mesh;
 		}
@@ -323,17 +353,25 @@ namespace StoneRoad
 		{
 			MeshData mesh;
 
-			if (this.Api.World.BlockAccessor.GetBlock(this.Pos, BlockLayersAccess.Default) is BlockChoppingBlock block)
+			if (Api.World.BlockAccessor.GetBlock(Pos, BlockLayersAccess.Default) is BlockChoppingBlock block)
 			{
 				var texture = tesselator.GetTexSource(block);
 
 				// Base model
-				mesh = block.GenMesh(this.Api as ICoreClientAPI, texture);
+				mesh = block.GenMesh(Api as ICoreClientAPI, texture);
 				mesher.AddMeshData(mesh);
 
-				if (this.inventory != null && !IsInventoryEmpty)
+				if (inventory != null && !IsInventoryEmpty)
 				{
-					mesh = GenBlockMesh(inventory[0].Itemstack);
+					string shapePath = inventory[0].Itemstack.Collectible.Code.Path;
+					if (shapePath.StartsWith("firewood"))
+					{
+						AssetLocation fwBlock = new AssetLocation("stoneroad", "firewoodblock");
+						ItemStack tempStack = new ItemStack(Api.World.GetBlock(fwBlock));
+						mesh = GenBlockMesh(tempStack);
+					}
+					else
+						mesh = GenBlockMesh(inventory[0].Itemstack);
 					if (mesh != null)
 						mesher.AddMeshData(mesh);
 				}
