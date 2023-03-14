@@ -2,13 +2,13 @@
   "ingredientPattern": "TTT,S_S,BBB",
   "ingredients": {
     "T": {
-      "type": "block",
+      "type": "item",
       "code": "uncuredplank-raw-*",
       "name": "wood",
       "quantity": 2
     },
     "S": {
-      "type": "block",
+      "type": "item",
       "code": "uncuredplank-raw-*",
       "name": "wood",
       "quantity": 3

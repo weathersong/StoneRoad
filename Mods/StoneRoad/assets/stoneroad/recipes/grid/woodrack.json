@@ -16,7 +16,7 @@
       "quantity": 2
     },
     "B": {
-      "type": "block",
+      "type": "item",
       "code": "uncuredplank-raw-*"
     }
   },
