@@ -7,8 +7,43 @@
       "code": "stoneroad:charcoal-poor",
       "quantity": 1,
       "eleCode": "Coal",
-      "textureCodeReplace": { "from": "coal", "to": "charcoal" },
+      "textureCodeReplace": {
+        "from": "coal",
+        "to": "charcoal"
+      },
       "burnTimeHours": 16
+    },
+    "file": "game:blocktypes/wood/pitkiln.json"
+  },
+  {
+    "op": "add",
+    "path": "/attributes/buildMats/fuel/-",
+    "value": {
+      "type": "item",
+      "code": "stoneroad:charcoal-fine",
+      "quantity": 1,
+      "eleCode": "Coal",
+      "textureCodeReplace": {
+        "from": "coal",
+        "to": "charcoal"
+      },
+      "burnTimeHours": 9
+    },
+    "file": "game:blocktypes/wood/pitkiln.json"
+  },
+  {
+    "op": "add",
+    "path": "/attributes/buildMats/fuel/-",
+    "value": {
+      "type": "item",
+      "code": "stoneroad:charcoal-superior",
+      "quantity": 1,
+      "eleCode": "Coal",
+      "textureCodeReplace": {
+        "from": "coal",
+        "to": "charcoal"
+      },
+      "burnTimeHours": 8
     },
     "file": "game:blocktypes/wood/pitkiln.json"
   }
