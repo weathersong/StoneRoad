@@ -13,32 +13,36 @@ using static StoneRoad.BEWoodRack;
 namespace StoneRoad
 {
 
-	public class BESteamingCabinet : BlockEntityDisplayCase
+	public class BEStraighteningRack : BlockEntityDisplayCase
 	{
 		static SimpleParticleProperties breakSparks;
 		static SimpleParticleProperties smallMetalSparks;
 		static SimpleParticleProperties smoke;
 
-		//first 4 for planks, last 1 for firewood
-		private readonly int maxSlots = 5;
+		//first 12 for planks, last 1 for firewood
+		private readonly int maxSlots = 13;
 		protected static readonly Random Rnd = new Random();
-		public string State { get; protected set; }
-		private readonly long particleTick;
+
+		public enum StraightenRackStates
+		{
+			Starting = 0, Steaming = 1, Done = 2
+		}
+		public StraightenRackStates State;
+
+		//private readonly long particleTick;
 
 		private BlockFacing ownFacing;
 		private double burningUntilTotalDays;
 		private double burningStartTotalDays;
-		public override string InventoryClassName => "steamcabinet";
+		public override string InventoryClassName => "straightenrack";
 		public override InventoryBase Inventory => this.inventory;
 		private int FirstFreeSlot => GetFirstFreeSlot();
 
-		private AssetLocation doorOpenSound;
-		private AssetLocation doorCloseSound;
 		private AssetLocation logSound;
 
 		private Random rnd;
 
-		static BESteamingCabinet()
+		static BEStraighteningRack()
 		{
 			smallMetalSparks = new SimpleParticleProperties(
 				2, 5,
@@ -93,29 +97,28 @@ namespace StoneRoad
 			};
 		}
 
-		public BESteamingCabinet()
+		public BEStraighteningRack()
 		{
 			inventory = new InventoryGeneric(maxSlots, null, null);
 			meshes = new MeshData[maxSlots];
+			State = StraightenRackStates.Starting;
 		}
 
 		public bool IsBurning { get; private set; }
 
-		public ItemSlot WoodSlot => inventory[4];
+		public ItemSlot WoodSlot => inventory[maxSlots-1];
 
 		public ItemStack WoodStack
 		{
-			get => inventory[4].Itemstack;
-			set => inventory[4].Itemstack = value;
+			get => inventory[maxSlots - 1].Itemstack;
+			set => inventory[maxSlots - 1].Itemstack = value;
 		}
 
 		public override void Initialize(ICoreAPI api)
 		{
 			base.Initialize(api);
-			inventory.LateInitialize("steamcabinet" + "-" + Pos.X + "/" + Pos.Y + "/" + Pos.Z, api);
+			inventory.LateInitialize("straightenrack" + "-" + Pos.X + "/" + Pos.Y + "/" + Pos.Z, api);
 			RegisterGameTickListener(OnGameTick, 500);
-			doorOpenSound = new AssetLocation("game", "sounds/block/chestopen");
-			doorCloseSound = new AssetLocation("game", "sounds/block/chestclose");
 			logSound = new AssetLocation("game", "sounds/block/planks");
 
 			rnd = new Random();
@@ -127,7 +130,7 @@ namespace StoneRoad
 		public override void OnBlockUnloaded()
 		{
 			base.OnBlockUnloaded();
-			UnregisterGameTickListener(particleTick);
+			//UnregisterGameTickListener(particleTick);
 		}
 
 		private void EmitParticles()
@@ -167,22 +170,22 @@ namespace StoneRoad
 		private void DoConvert()
 		{
 			WoodStack = null;
-			for (int i = 0; i < 4; i++)
+			for (int i = 0; i < maxSlots-1; i++)
 			{
 				if (inventory[i] == null || inventory[i].Itemstack == null) // might have only a partial load
 					continue;
 				ItemStack thisStack = inventory[i].Itemstack;
 				if (thisStack.Collectible.Code.Path.StartsWith("uncuredplank-warped-"))
 				{
-					float lumberSteamingCurePctChance = Block is BlockSteamingCabinet block ? block.LumberSteamingCurePctChance : 100;
-					if (rnd.Next(100) < lumberSteamingCurePctChance)
+					float lumberStraighteningCurePctChance = Block is BlockStraighteningRack block ? block.LumberStraighteningCurePctChance : 100;
+					if (rnd.Next(100) < lumberStraighteningCurePctChance)
 						inventory[i].Itemstack = new ItemStack( Api.World.GetItem(new AssetLocation( $"plank-{thisStack.Collectible.Variant["wood"]}" )) );
 					// else stays warped, steam again
 				}
 			}
 			IsBurning = false;
 			burningUntilTotalDays = 0;
-			State = "closed";
+			State = StraightenRackStates.Done;
 			MarkDirty(true);
 		}
 
@@ -192,12 +195,12 @@ namespace StoneRoad
 				return false;
 
 			IsBurning = true;
-			State = "lit";
+			State = StraightenRackStates.Steaming;
 
-			BlockSteamingCabinet block = Block as BlockSteamingCabinet;
-			double lumberSteamingHours = block.LumberSteamingHours;
+			BlockStraighteningRack block = Block as BlockStraighteningRack;
+			double lumberStraighteningHours = block.LumberStraighteningHours;
 
-			burningUntilTotalDays = Api.World.Calendar.TotalDays + (lumberSteamingHours / 24.0);
+			burningUntilTotalDays = Api.World.Calendar.TotalDays + (lumberStraighteningHours / 24.0);
 			burningStartTotalDays = Api.World.Calendar.TotalDays;
 			MarkDirty();
 			return true;
@@ -208,7 +211,7 @@ namespace StoneRoad
 			return !IsBurning && WoodSlot.StackSize == 4 && this.inventory[0].StackSize > 0;
 		}
 
-		// Returns the first available empty inventory slot, returns -1 if all slots are full
+		// Returns the first available empty LUMBER inventory slot (the last inventory slot is reserved for wood), returns -1 if all slots are full
 		private int GetFirstFreeSlot()
 		{
 			int slot = 0;
@@ -219,7 +222,7 @@ namespace StoneRoad
 					found = true;
 				else
 					slot++;
-			} while (slot < maxSlots && !found);
+			} while (slot < maxSlots-1 && !found);
 			if (!found)
 				slot = -1;
 			return slot;
@@ -227,6 +230,10 @@ namespace StoneRoad
 
 		internal bool OnInteract(IPlayer byPlayer, BlockSelection blockSel)
 		{
+			// Break block if you want to interrupt steaming
+			if (State == StraightenRackStates.Steaming)
+				return false;
+
 			ItemSlot playerSlot = byPlayer.InventoryManager.ActiveHotbarSlot;
 
 			string playerPath = "";
@@ -237,61 +244,44 @@ namespace StoneRoad
 			if (inventory[0].Itemstack?.Collectible != null)
 				cabinetPath = inventory[0].Itemstack.Collectible.Code.Path;
 
-			if (State == "open")
+			// Put in (aged or non) firewood
+			if (playerPath.StartsWith("firewood"))
 			{
-				// put in firewood
-				if (playerPath == "firewood")
+				//if the firewood slot is empty or less than full add one
+				if ((WoodSlot.Empty || WoodStack?.StackSize < 4) && TryPut(playerSlot, WoodSlot))
 				{
-					//if the firewood slot is empty or less than full add one
-					if ((WoodSlot.Empty || WoodStack?.StackSize < 4) && TryPut(playerSlot, WoodSlot))
-					{
-						Api.World.PlaySoundAt(logSound, blockSel.Position.X, blockSel.Position.Y, blockSel.Position.Z, byPlayer);
-						return true;
-					}
-				}
-				// put in raw lumber
-				else if (playerPath.Contains("uncuredplank-warped"))
-				{
-					int i = FirstFreeSlot;
-					if (i > -1 && i < 4 && TryPut(playerSlot, inventory[i]))
-					{
-						Api.World.PlaySoundAt(logSound, blockSel.Position.X, blockSel.Position.Y, blockSel.Position.Z, byPlayer);
-						return true;
-					}
-				}
-				// holding a torch shortcuts the take-one-out below
-				else if (playerPath.Contains("torch"))
-				{
-
-				}
-				// take out one - this needs to be always allowed since contents can be mixed-state
-				else if (cabinetPath != "")
-				{
-					int i = FirstFreeSlot - 1;
-					if (i == -2)
-						i = 3; // wrap to the last *plank* slot, not the wood slot
-					if (i > -1 && i < 4 && TryTake(byPlayer, this.inventory[i]))
-					{
-						Api.World.PlaySoundAt(logSound, blockSel.Position.X, blockSel.Position.Y, blockSel.Position.Z, byPlayer);
-						return true;
-					}
+					Api.World.PlaySoundAt(logSound, blockSel.Position.X, blockSel.Position.Y, blockSel.Position.Z, byPlayer);
+					return true;
 				}
 			}
-			else if (State == "closed")
+			// Put in *warped* lumber
+			else if (playerPath.Contains("uncuredplank-warped"))
 			{
-				Api.World.PlaySoundAt(doorOpenSound, blockSel.Position.X, blockSel.Position.Y - 1, blockSel.Position.Z, byPlayer);
-				State = "open";
-				MarkDirty(true);
-				return true;
+				int i = FirstFreeSlot;
+				if (i > -1 && TryPut(playerSlot, inventory[i]))
+				{
+					Api.World.PlaySoundAt(logSound, blockSel.Position.X, blockSel.Position.Y, blockSel.Position.Z, byPlayer);
+					return true;
+				}
 			}
-
-			if (State == "open")
+			// Holding a torch shortcuts the take-one-out below
+			else if (playerPath.Contains("torch"))
 			{
-				//close the door
-				Api.World.PlaySoundAt(doorCloseSound, blockSel.Position.X, blockSel.Position.Y, blockSel.Position.Z, byPlayer);
-				State = "closed";
-				MarkDirty(true);
-				return true;
+
+			}
+			// Take out one, regardless of state
+			else if (cabinetPath != "")
+			{
+				int i = FirstFreeSlot - 1;
+				if (i == -2)
+					i = maxSlots-2; // wrap to the last *lumber* slot, not the wood slot
+				if (i > -1 && TryTake(byPlayer, inventory[i]))
+				{
+					Api.World.PlaySoundAt(logSound, blockSel.Position.X, blockSel.Position.Y, blockSel.Position.Z, byPlayer);
+					if (State == StraightenRackStates.Done && FirstFreeSlot == 0)
+						State = StraightenRackStates.Starting;
+					return true;
+				}
 			}
 
 			return false;
@@ -337,20 +327,17 @@ namespace StoneRoad
 
 		public override void OnBlockPlaced(ItemStack byItemStack = null)
 		{
-			this.State = "closed";
-			this.MarkDirty(true);
+			State = StraightenRackStates.Starting;
+			MarkDirty(true);
 			base.OnBlockPlaced(byItemStack);
 		}
 
 		private bool TryPut(ItemSlot playerSlot, ItemSlot targetSlot)
 		{
-			var moved = playerSlot.TryPutInto(this.Api.World, targetSlot);
+			int moved = playerSlot.TryPutInto(this.Api.World, targetSlot);
 			if (moved > 0)
-			{
-				this.MarkDirty(true);
-				return moved > 0;
-			}
-			return false;
+				MarkDirty(true);
+			return moved > 0;
 		}
 
 		private bool TryTake(IPlayer byPlayer, ItemSlot itemSlot)
@@ -375,7 +362,7 @@ namespace StoneRoad
 		public override void FromTreeAttributes(ITreeAttribute tree, IWorldAccessor worldForResolve)
 		{
 			base.FromTreeAttributes(tree, worldForResolve);
-			State = tree.GetString("state");
+			State = (StraightenRackStates)tree.GetInt("state");
 			IsBurning = tree.GetInt("burning") > 0;
 			burningUntilTotalDays = tree.GetDouble("burningUntilTotalDays");
 			burningStartTotalDays = tree.GetDouble("burningStartTotalDays");
@@ -386,7 +373,7 @@ namespace StoneRoad
 		public override void ToTreeAttributes(ITreeAttribute tree)
 		{
 			base.ToTreeAttributes(tree);
-			tree.SetString("state", State);
+			tree.SetInt("state", (int)State);
 			tree.SetInt("burning", IsBurning ? 1 : 0);
 			tree.SetDouble("burningUntilTotalDays", burningUntilTotalDays);
 			tree.SetDouble("burningStartTotalDays", burningStartTotalDays);
@@ -394,7 +381,7 @@ namespace StoneRoad
 
 		public override void GetBlockInfo(IPlayer forPlayer, StringBuilder sb)
 		{
-			for (int i = 0; i < 4; i++)
+			for (int i = 0; i < maxSlots-1; i++)
 				if (!inventory[i].Empty)
 					if (inventory[i].Itemstack.Collectible.Code.Path.StartsWith("uncuredplank-"))
 						sb.AppendLine(Lang.Get("stoneroad:item-" + inventory[i].Itemstack.Collectible.Code.Path));
@@ -407,13 +394,13 @@ namespace StoneRoad
 			double percentComplete = Math.Round((Api.World.Calendar.TotalDays - burningStartTotalDays) / (burningUntilTotalDays - burningStartTotalDays) * 100, 0);
 
 			if (0 <= percentComplete && percentComplete < 100 && IsBurning)
-				sb.AppendLine("" + percentComplete + "% " + Lang.Get("stoneroad:blockhelp-steamcabinet-complete"));
+				sb.AppendLine("" + percentComplete + "% " + Lang.Get("stoneroad:blockhelp-straightenrack-complete"));
 
 			sb.AppendLine();
 			//sb.AppendLine(string.Format("DEBUG: {3} , Current total days: {0} , BurningStart total days: {1} , BurningUntil total days: {2}", this.Api.World.Calendar.TotalDays, this.burningStartTotalDays, this.burningUntilTotalDays, this.burning));
 		}
 
-		private MeshData GenLumberMesh(ItemStack lumberStack, int count)
+		private MeshData GenLumberMesh(ItemStack lumberStack, int index)
 		{
 			this.nowTesselatingObj = lumberStack.Block;
 			MeshData mesh = null;
@@ -425,35 +412,17 @@ namespace StoneRoad
 				} catch { return mesh; }
 				mesh?.RenderPassesAndExtraBits.Fill((short)EnumChunkRenderPass.BlendNoCull);
 
-				float radX = -10 * GameMath.DEG2RAD;
-				float radY = 90 * GameMath.DEG2RAD;
-				float radZ = -90 * GameMath.DEG2RAD;
-				// Rear left
-				if (count == 0)
-				{
-					mesh.Rotate(new Vec3f(0.5f, 0.5f, 0.5f), radX, radY, radZ);
-					mesh.Translate(0.15f, 0.33f, -0.75f);
-				}
-				// Rear right
-				else if (count == 1)
-				{
-					mesh.Rotate(new Vec3f(0.5f, 0.5f, 0.5f), -radX, radY, radZ);
-					mesh.Translate(0.25f, 0.5f, -0.15f);
-				}
-				// Fore left
-				else if (count == 2)
-				{
-					mesh.Rotate(new Vec3f(0.5f, 0.5f, 0.5f), radX, radY, radZ);
-					mesh.Translate(-0.25f, 0.33f, -0.75f);
-				}
-				// Fore right
-				else
-				{
-					mesh.Rotate(new Vec3f(0.5f, 0.5f, 0.5f), -radX, radY, radZ);
-					mesh.Translate(-0.15f, 0.5f, -0.15f);
-				}
+				float radX = 90 * GameMath.DEG2RAD;
+				float radY = 0 * GameMath.DEG2RAD;
+				float radZ = 90 * GameMath.DEG2RAD;
+				mesh.Rotate(new Vec3f(0.5f, 0.5f, 0.5f), radX, radY, radZ);
+				mesh.Translate(
+					-0.8125f + (0.0625f * (index / 6)) + (index % 6 * 0.125f), // spacing is regular but the offset is different for lower and upper racks
+					0f + (0.3125f * (index / 6)), // upper rack is 5/16ths above the lower
+					0f
+				);
 
-				mesh.Scale(new Vec3f(0.5f, 0, 0.5f), 0.75f, 0.75f, 0.75f);
+				//mesh.Scale(new Vec3f(0.5f, 0, 0.5f), 1f, 1f, 1f);
 
 				mesh.Rotate(new Vec3f(0.5f, 0, 0.5f), 0, Block.Shape.rotateY * GameMath.DEG2RAD, 0);
 			}
@@ -463,50 +432,43 @@ namespace StoneRoad
 		public override bool OnTesselation(ITerrainMeshPool mesher, ITesselatorAPI tesselator)
 		{
 			MeshData mesh;
-			string shapeBase = "stoneroad:shapes/block/steamcabinet/steamcabinetblock-placed";
+			string shapeBase = "stoneroad:shapes/block/straightenrack/straightenrackblock-placed";
 			int i = 0;
-			if (Api.World.BlockAccessor.GetBlock(Pos, BlockLayersAccess.Default) is BlockSteamingCabinet block)
+			if (Api.World.BlockAccessor.GetBlock(Pos, BlockLayersAccess.Default) is BlockStraighteningRack block)
 			{
 				ITexPositionSource texture = tesselator.GetTexSource(block);
 				// Base model
-				mesh = block.GenMesh(Api as ICoreClientAPI, shapeBase, texture, State, i);
+				mesh = block.GenMesh(Api as ICoreClientAPI, shapeBase, texture, i);
 				mesher.AddMeshData(mesh);
 
-				// Door next
-				shapeBase = shapeBase.Replace("placed", "door");
-				mesh = block.GenMesh(Api as ICoreClientAPI, shapeBase, texture, State, i);
-				mesher.AddMeshData(mesh);
-
-				if (this.inventory != null)
+				if (inventory != null)
 				{
 					// Wood 
 					if (!WoodSlot.Empty)
 					{
-						if (State == "lit")
-						{ shapeBase = shapeBase.Replace("door", "lit"); }
+						if (State == StraightenRackStates.Steaming)
+							shapeBase = shapeBase.Replace("placed", "lit");
 						else
-						{ shapeBase = shapeBase.Replace("door", "log"); }
+							shapeBase = shapeBase.Replace("placed", "log");
 						for (i = 1; i <= WoodStack.StackSize; i++)
 						{
-							mesh = block.GenMesh(Api as ICoreClientAPI, shapeBase, texture, State, i);
+							mesh = block.GenMesh(Api as ICoreClientAPI, shapeBase, texture, i);
 							mesher.AddMeshData(mesh);
 						}
 					}
 
 					// Contents
-					// dont render if lit or closed
-					if (State != "lit")
-						for (i = 0; i < 4; i++)
-							if (!this.inventory[i].Empty)
-							{
-								// planks-as-items are a bit tricky because of the wood variant, so there's a "fake" version that looks the same, but is a block
-								//mesh = GenBlockMesh(inventory[i].Itemstack, i);
-								AssetLocation plankBlock = new AssetLocation("stoneroad", $"plankblock-{inventory[i].Itemstack.Collectible.Variant["wood"]}");
-								ItemStack tempStack = new ItemStack(Api.World.GetBlock(plankBlock));
-								mesh = GenLumberMesh(tempStack, i);
-								if (mesh != null)
-									mesher.AddMeshData(mesh);
-							}
+					for (i = 0; i < maxSlots-1; i++)
+						if (!inventory[i].Empty)
+						{
+							// planks-as-items are a bit tricky because of the wood variant, so there's a "fake" version that looks the same, but is a block
+							//mesh = GenBlockMesh(inventory[i].Itemstack, i);
+							AssetLocation plankBlock = new AssetLocation("stoneroad", $"plankblock-{inventory[i].Itemstack.Collectible.Variant["wood"]}");
+							ItemStack tempStack = new ItemStack(Api.World.GetBlock(plankBlock));
+							mesh = GenLumberMesh(tempStack, i);
+							if (mesh != null)
+								mesher.AddMeshData(mesh);
+						}
 				}
 
 			}

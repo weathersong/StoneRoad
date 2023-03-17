@@ -9,8 +9,8 @@ namespace StoneRoad
 		public double LumberDryingHours;
 		public int LumberDryingCurePctChance;
 
-		public double LumberSteamingHours;
-		public int LumberSteamingCurePctChance;
+		public double LumberStraighteningHours;
+		public int LumberStraighteningCurePctChance;
 
 		public float CharcoalPitBurnHours;
 
@@ -27,8 +27,8 @@ namespace StoneRoad
 			LumberDryingHours = 110;
 			LumberDryingCurePctChance = 5;
 
-			LumberSteamingHours = 22;
-			LumberSteamingCurePctChance = 60;
+			LumberStraighteningHours = 22;
+			LumberStraighteningCurePctChance = 60;
 
 			CharcoalPitBurnHours = 60;
 

@@ -1,5 +1,5 @@
 # StoneRoad
-This mod slows down the progression to copper age, plus adds a few interesting new ways to perform routine tasks. It currently depends, implicitly, on the mod Ancient Tools, though really just that mod's adze.
+This mod slows down the progression to copper age, plus adds a few interesting new ways to perform routine tasks. It currently depends, implicitly, on the mod Ancient Tools, for the adze and mortar+pestle.
 
 Stone Road is sort of a stand-in until In Dappled Groves is fully released.
 
@@ -15,11 +15,11 @@ You may also further chop firewood into sticks, as a convenience. Note that ther
 Create a drying rack using a few pieces of raw lumber made from the chopping block. Load it up with either firewood or raw lumber or both. It then takes some time to dry (cure), which is configurable.
 
 * **Lumber can convert into boards.**
-The drying rack will usually produce warped lumber (the conversion chance is configurable), so a steaming cabinet must be built, loaded with warped lumber, fueled with (regular) firewood, and fired for about a day (configurable), for a chance (configurable)
+The drying rack will usually produce warped lumber (the conversion chance is configurable), so a straightening rack must be built, loaded with warped lumber, fueled with (either) firewood, and fired for about a day (configurable), for a chance (configurable)
 to convert the warped lumber into regular, vanilla boards. This completely circumvents the need for a saw, and means that boards are possible, though time- and resource-intensive, in the stone age. This unlocks the ability to craft doors and, importantly, barrels.
 
 * **Crucible creation process extended.**
-No longer just clay-formed and fired, you must first mold the raw clay form (using *only* fire clay), then treat it in a borax solution. (Why borax? Totally arbitrary. This part of the mod is still under consideration.) In a barrel.
+No longer just clay-formed and fired, you must first shape the raw clay form (using *only* fire clay), then treat it in a limewater solution. (Why limewater? Totally arbitrary. This part of the mod is still under consideration.) In a barrel.
 The treated clay form is then dried, and then can finally be fired. However...
 
 * **Firewood and charcoal don't burn as hot.**
@@ -33,7 +33,5 @@ Dig out that charcoal and the poor charcoal (unconverted) beneath it, and lay do
 ***
 
 This mod isn't generally intended for public use, but is public here to act as a useful example of several types of systems. It has only had light testing in-game, and only on version 1.17.11.
-
-The steaming cabinet's model is from Primitive Survival (the smoker), and I'd like to change to my own model but keep the really useful feature of it being a BlockEntityDisplayCase.
 
 Some of the code is also adapted from Primitive Survival (or the game's own files), but has been pretty extensively modified to suit the mod's own function.

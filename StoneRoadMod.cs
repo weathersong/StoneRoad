@@ -50,10 +50,6 @@ namespace StoneRoad
 			// Log halves
 			api.RegisterBlockClass("BlockLogHalf", typeof(BlockLogHalf));
 
-			// Uncured planks - no longer used, this was for drying planks individually on the ground
-			//api.RegisterBlockClass("BlockUncuredPlank", typeof(BlockUncuredPlank));
-			//api.RegisterBlockEntityClass("BEUncuredPlank", typeof(BEUncuredPlank));
-
 			// Wood drying rack
 			api.RegisterBlockClass("BlockWoodRack", typeof(BlockWoodRack));
 			api.RegisterBlockEntityClass("BEWoodRack", typeof(BEWoodRack));
@@ -63,9 +59,9 @@ namespace StoneRoad
 			api.RegisterBlockClass("BlockFirewoodPileAged", typeof(BlockFirewoodPileAged));
 			api.RegisterBlockEntityClass("BEFirewoodPileAged", typeof(BEFirewoodPileAged));
 
-			// Steaming cabinet
-			api.RegisterBlockClass("BlockSteamingCabinet", typeof(BlockSteamingCabinet));
-			api.RegisterBlockEntityClass("BESteamingCabinet", typeof(BESteamingCabinet));
+			// Straightening rack
+			api.RegisterBlockClass("BlockStraighteningRack", typeof(BlockStraighteningRack));
+			api.RegisterBlockEntityClass("BEStraighteningRack", typeof(BEStraighteningRack));
 
 			// Charcoal
 			// // BlockCharcoalPit is the "firepit" block, not to be confused with (char)coal *piles*.

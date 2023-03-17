@@ -22,6 +22,10 @@
     </Reference>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="extras\" />
+  </ItemGroup>
+
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
     <Exec Command="call &quot;D:\Games\Vintage Story\StoneRoad\postbuild.cmd&quot;&#xD;&#xA;" />
   </Target>

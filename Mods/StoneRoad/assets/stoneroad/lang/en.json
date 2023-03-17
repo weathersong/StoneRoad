@@ -108,12 +108,14 @@
 
   "block-woodrack-*": "Wood drying rack",
 
-  "block-steamcabinet-open-*": "Steaming cabinet (Open)",
-  "block-steamcabinet-closed-*": "Steaming cabinet",
-  "block-steamcabinet-lit-*": "Steaming cabinet (Lit)",
-  "blockdesc-steamcabinet-*": "Add 4 firewood, and up to 4 warped lumber, then light with a torch to start the process.",
-  "blockhelp-steamcabinet-rightclick": "Open / Load / Unload / Close",
-  "blockhelp-steamcabinet-complete": "complete",
+  "block-straightenrackshelfblock-raw": "Straightening rack shelf (Raw)",
+  "block-straightenrackshelfblock-burned": "Straightening rack shelf (Fired)",
+
+  "block-straightenrack-*": "Straightening rack",
+  "block-steamcabinet-lit-*": "Straightening rack (Lit)",
+  "blockdesc-straightenrack-*": "Add 4 firewood, and up to 4 warped lumber, then light with a torch to start the process.",
+  "blockhelp-straightenrack-rightclick": "Load / Unload",
+  "blockhelp-straightenrack-complete": "complete",
 
   "block-crucible-uncured": "Shaped crucible",
   "block-crucible-wet": "Wet raw crucible",

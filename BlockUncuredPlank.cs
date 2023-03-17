@@ -15,7 +15,7 @@ namespace StoneRoad
 		//private double conversionHours;
 		//public float conversionPct;
 
-		private WorldInteraction[] pickupInteraction = null;
+		//private WorldInteraction[] pickupInteraction = null;
 
 		public BlockUncuredPlank() { }
 

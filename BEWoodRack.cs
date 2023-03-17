@@ -33,7 +33,6 @@ namespace StoneRoad
 		public bool IsDrying => state == WoodRackStates.Drying;
 		public bool IsDone => state == WoodRackStates.Done;
 
-		private StoneRoadMod srMod;
 		private double dryingUntilTotalDays;
 		private double dryingStartTotalDays;
 		private Random rnd;

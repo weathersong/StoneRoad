@@ -9,38 +9,38 @@ using Vintagestory.API.Util;
 namespace StoneRoad
 {
 
-	// Using Primitive Survival's Smoker as a reference
+	// Originally based on Primitive Survival's (Meat) Smoker, credit to Spear&Fang!
 
-	public class BlockSteamingCabinet : Block
+	public class BlockStraighteningRack : Block
 	{
 		public StoneRoadMod SRMod;
-		public double LumberSteamingHours;
-		public float LumberSteamingCurePctChance;
+		public double LumberStraighteningHours;
+		public float LumberStraighteningCurePctChance;
 
 		public override void OnLoaded(ICoreAPI api)
 		{
 			base.OnLoaded(api);
 
 			//hard - coded defaults, but config defaults should always exist
-			LumberSteamingHours = 22;
-			LumberSteamingCurePctChance = 60;
+			LumberStraighteningHours = 22;
+			LumberStraighteningCurePctChance = 60;
 
 			// these are re-read OnLoaded because mod config may have been changed by player
 			SRMod = api.ModLoader.GetModSystem<StoneRoadMod>();
 			if (SRMod != null && SRMod.Config != null)
 			{
-				LumberSteamingHours = SRMod.Config.LumberSteamingHours;
-				LumberSteamingCurePctChance = SRMod.Config.LumberSteamingCurePctChance;
+				LumberStraighteningHours = SRMod.Config.LumberStraighteningHours;
+				LumberStraighteningCurePctChance = SRMod.Config.LumberStraighteningCurePctChance;
 			}
 		}
 
 		public override WorldInteraction[] GetPlacedBlockInteractionHelp(IWorldAccessor world, BlockSelection selection, IPlayer forPlayer)
 		{
-			var be = world.BlockAccessor.GetBlockEntity(selection.Position) as BESteamingCabinet;
+			BEStraighteningRack be = world.BlockAccessor.GetBlockEntity(selection.Position) as BEStraighteningRack;
 
-			if (be?.State == "lit")
-			{ return base.GetPlacedBlockInteractionHelp(world, selection, forPlayer); }
-			else if (be?.State == "closed" && be?.WoodSlot.StackSize == 4 && be?.Inventory[0].Empty == false)
+			if (be?.State == BEStraighteningRack.StraightenRackStates.Steaming)
+				return base.GetPlacedBlockInteractionHelp(world, selection, forPlayer);
+			else if (be?.WoodSlot.StackSize == 4 && be?.Inventory[0].Empty == false)
 			{
 				return base.GetPlacedBlockInteractionHelp(world, selection, forPlayer).Append(new WorldInteraction[] {
 				new WorldInteraction()
@@ -51,18 +51,7 @@ namespace StoneRoad
 				},
 				new WorldInteraction()
 				{
-					ActionLangCode = "stoneroad:blockhelp-steamcabinet-rightclick",
-					MouseButton = EnumMouseButton.Right,
-					HotKeyCode = null
-				}
-				});
-			}
-			else if (be?.State != "lit")
-			{
-				return base.GetPlacedBlockInteractionHelp(world, selection, forPlayer).Append(new WorldInteraction[] {
-				new WorldInteraction()
-				{
-					ActionLangCode = "stoneroad:blockhelp-steamcabinet-rightclick",
+					ActionLangCode = "stoneroad:blockhelp-straightenrack-rightclick",
 					MouseButton = EnumMouseButton.Right,
 					HotKeyCode = null
 				}
@@ -70,26 +59,33 @@ namespace StoneRoad
 			}
 			else
 			{
-				return base.GetPlacedBlockInteractionHelp(world, selection, forPlayer);
+				return base.GetPlacedBlockInteractionHelp(world, selection, forPlayer).Append(new WorldInteraction[] {
+				new WorldInteraction()
+				{
+					ActionLangCode = "stoneroad:blockhelp-straightenrack-rightclick",
+					MouseButton = EnumMouseButton.Right,
+					HotKeyCode = null
+				}
+				});
 			}
 		}
 
 		public override EnumIgniteState OnTryIgniteBlock(EntityAgent byEntity, BlockPos pos, float secondsIgniting)
 		{
-			var be = byEntity.World.BlockAccessor.GetBlockEntity(pos) as BESteamingCabinet;
+			BEStraighteningRack be = byEntity.World.BlockAccessor.GetBlockEntity(pos) as BEStraighteningRack;
 			if (!be.CanIgnite())
-			{ return EnumIgniteState.NotIgnitablePreventDefault; }
+				return EnumIgniteState.NotIgnitablePreventDefault;
 			return secondsIgniting > 4 ? EnumIgniteState.IgniteNow : EnumIgniteState.Ignitable;
 		}
 
 		public override void OnTryIgniteBlockOver(EntityAgent byEntity, BlockPos pos, float secondsIgniting, ref EnumHandling handling)
 		{
 			handling = EnumHandling.PreventDefault;
-			var be = byEntity.World.BlockAccessor.GetBlockEntity(pos) as BESteamingCabinet;
+			BEStraighteningRack be = byEntity.World.BlockAccessor.GetBlockEntity(pos) as BEStraighteningRack;
 			be?.TryIgnite();
 		}
 
-		public MeshData GenMesh(ICoreClientAPI capi, string shapePath, ITexPositionSource texture, string state, int count)
+		public MeshData GenMesh(ICoreClientAPI capi, string shapePath, ITexPositionSource texture, int count)
 		{
 			Shape shape;
 			ITesselatorAPI tesselator = capi.Tesselator;
@@ -100,31 +96,25 @@ namespace StoneRoad
 				glow = 200;
 			tesselator.TesselateShape(shapePath, shape, out var mesh, texture, new Vec3f(0, 0, 0), glow);
 
-			float rotate = Shape.rotateY;
-			if (state == "open" && shapePath.Contains("door"))
-			{
-				rotate -= 100;
-				mesh.Translate(0.2f, 0f, 0.8f);
-			}
 			if (shapePath.Contains("log") || shapePath.Contains("lit"))
 			{
 				if (count == 1)
-					mesh.Translate(-0.06f, -0.08f, -0.12f);
+					mesh.Translate(0f, 0f, 0f);
 				else if (count == 2)
-					mesh.Translate(-0.06f, -0.08f, 0.01f);
+					mesh.Translate(0.13f, 0f, 0f);
 				else if (count == 3)
-					mesh.Translate(-0.1f, 0.05f, -0.12f);
+					mesh.Translate(0f, 0.125f, 0f);
 				else
-					mesh.Translate(-0.08f, 0.05f, 0.01f);
+					mesh.Translate(0.13f, 0.125f, 0f);
 			}
-			mesh.Rotate(new Vec3f(0.5f, 0, 0.5f), 0, rotate * GameMath.DEG2RAD, 0); //orient based on direction 
+			mesh.Rotate(new Vec3f(0.5f, 0, 0.5f), 0, Shape.rotateY * GameMath.DEG2RAD, 0); //orient based on direction 
 			return mesh;
 		}
 
 		public override void OnBlockBroken(IWorldAccessor world, BlockPos pos, IPlayer byPlayer, float dropQuantityMultiplier = 1)
 		{
-			if (world.BlockAccessor.GetBlockEntity(pos) is BESteamingCabinet be)
-			{ be.OnBreak(); } //empty the inventory onto the ground
+			if (world.BlockAccessor.GetBlockEntity(pos) is BEStraighteningRack be)
+				be.OnBreak(); // special inventory drop consideration because of firewood
 			base.OnBlockBroken(world, pos, byPlayer, dropQuantityMultiplier);
 		}
 
@@ -146,7 +136,7 @@ namespace StoneRoad
 
 		public override bool OnBlockInteractStart(IWorldAccessor world, IPlayer byPlayer, BlockSelection blockSel)
 		{
-			if (world.BlockAccessor.GetBlockEntity(blockSel.Position) is BESteamingCabinet be)
+			if (world.BlockAccessor.GetBlockEntity(blockSel.Position) is BEStraighteningRack be)
 				return be.OnInteract(byPlayer, blockSel);
 			return base.OnBlockInteractStart(world, byPlayer, blockSel);
 		}
