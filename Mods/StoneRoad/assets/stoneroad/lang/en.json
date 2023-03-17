@@ -113,7 +113,7 @@
 
   "block-straightenrack-*": "Straightening rack",
   "block-steamcabinet-lit-*": "Straightening rack (Lit)",
-  "blockdesc-straightenrack-*": "Add 4 firewood, and up to 4 warped lumber, then light with a torch to start the process.",
+  "blockdesc-straightenrack-*": "Add 4 firewood, and up to 12 warped lumber, then light with a torch to start the process.",
   "blockhelp-straightenrack-rightclick": "Load / Unload",
   "blockhelp-straightenrack-complete": "complete",
 

@@ -12,6 +12,12 @@
     "burnDuration": 60,
     "burnTemperature": 1100
   },
+  "grindingProps": {
+    "groundStack": {
+      "type": "item",
+      "code": "ancienttools:powderedcharcoal"
+    }
+  },
   "creativeinventory": {
     "general": [ "*" ],
     "items": [ "*" ]
@@ -69,6 +75,9 @@
   "maxstacksize": 64,
   "shape": {
     "base": "game:item/ore/ungraded/charcoal"
+  },
+  "textures": {
+    "ore": { "base": "charcoal-superior" }
   },
   "tpHandTransform": {
     "origin": {
