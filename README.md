@@ -35,6 +35,15 @@ The cook time for charcoal now defaults to 60 hours, though this can be configur
 
 ***
 
+## Additional Features
+These are some general quality-of-life features to make living without copper somewhat more bearable.
+
+* **Fruit can be juiced by hand.** This feature is experimental. It's a patch to all fruit (and, even more experimentally, all WildCraft fruit) allowing them to work like honeycombs:
+Place a container (a bowl, or a bucket if you've made it that far) on the ground, hold sneak, and hold left mouse. Not much juice is produced so that the fruit press remains desirable later. No mash is produced.
+This doesn't work with all fruits mainly because the logic is very simple and can't account for special cases like (pine)apples. But it should enable stone age syrup and even wine!
+
+***
+
 This mod isn't generally intended for public use, but is public here to act as a useful example of several types of systems. It has only had light testing in-game, and only on version 1.17.11.
 
 Some of the code is also adapted from Primitive Survival (or the game's own files), but has been pretty extensively modified to suit the mod's own function.

@@ -71,6 +71,9 @@ namespace StoneRoad
 			// // BlockCharcoalPile is the pile, introduced so that stoneroad's charcoalpile.json can have a quality variant
 			//api.RegisterBlockClass("BlockSRCharcoalPile", typeof(BlockCharcoalPile)); // not viable in 1.17 due to some hard-coded assumptions about the CodePath in BlockLayeredSlowDig itself
 
+			// Hand-juiced fruit
+			api.RegisterItemClass("ItemJuicyFruit", typeof(ItemJuicyFruit));
+
 			LogDebug($"Applying Harmony patches...");
 			Harmony = new Harmony("net.weathersong.stoneroad.harmonypatches");
 			Harmony.PatchAll(Assembly.GetExecutingAssembly());
