@@ -19,8 +19,10 @@ The drying rack will usually produce warped lumber (the conversion chance is con
 to convert the warped lumber into regular, vanilla boards. This completely circumvents the need for a saw, and means that boards are possible, though time- and resource-intensive, in the stone age. This unlocks the ability to craft doors and, importantly, barrels.
 
 * **Crucible creation process extended.**
-No longer just clay-formed and fired, you must first shape the raw clay form (using *only* fire clay), then treat it in a limewater solution. (Why limewater? Totally arbitrary. This part of the mod is still under consideration.) In a barrel.
-The treated clay form is then dried, and then can finally be fired. However...
+No longer just clay-formed and fired, you must first shape the raw clay form (using *only* fire clay), then treat it in a limewater solution, in a barrel.
+The treated clay form is then dried, and must then be loaded with *superior* charcoal before it can finally be fired.
+(This series of steps is meant to represent the sum total of the mod's changes, hence the barrel and the superior charcoal. But also locating the uncommon elements of fire clay and limestone in the world.)
+However...
 
 * **Firewood and charcoal don't burn as hot.**
 The most important consequence is that smelting won't be possible with vanilla charcoal. There are now 4 different qualities of charcoal: Poor, regular (the vanilla charcoal), Fine, and Superior.
