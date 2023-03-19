@@ -28,10 +28,10 @@ namespace StoneRoad
 		{
 			Starting = 0, Drying = 1, Done = 2
 		}
-		private WoodRackStates state;
-		public bool IsStarting => state == WoodRackStates.Starting;
-		public bool IsDrying => state == WoodRackStates.Drying;
-		public bool IsDone => state == WoodRackStates.Done;
+		public WoodRackStates State;
+		public bool IsStarting => State == WoodRackStates.Starting;
+		public bool IsDrying => State == WoodRackStates.Drying;
+		public bool IsDone => State == WoodRackStates.Done;
 
 		private double dryingUntilTotalDays;
 		private double dryingStartTotalDays;
@@ -41,7 +41,7 @@ namespace StoneRoad
 
 		public BEWoodRack()
 		{
-			state = WoodRackStates.Starting;
+			State = WoodRackStates.Starting;
 			inventory = new InventoryGeneric(maxSlots, null, null);
 			meshes = new MeshData[maxSlots];
 		}
@@ -66,9 +66,9 @@ namespace StoneRoad
 
 		private void CheckStarting()
 		{
-			if (state == WoodRackStates.Starting && FirstFreeSlot == -1)
+			if (State == WoodRackStates.Starting && FirstFreeSlot == -1)
 			{
-				state = WoodRackStates.Drying;
+				State = WoodRackStates.Drying;
 				BlockWoodRack block = Block as BlockWoodRack;
 				double lumberDryingHours = block.LumberDryingHours;
 				dryingUntilTotalDays = Api.World.Calendar.TotalDays + (lumberDryingHours / 24.0);
@@ -97,7 +97,7 @@ namespace StoneRoad
 						inventory[i].Itemstack = new ItemStack( Api.World.GetItem(new AssetLocation("stoneroad", stackPath.Replace("raw", "warped"))) );
 				}
 			}
-			state = WoodRackStates.Done;
+			State = WoodRackStates.Done;
 			dryingUntilTotalDays = 0;
 			MarkDirty();
 		}
@@ -164,7 +164,7 @@ namespace StoneRoad
 				{
 					Api.World.PlaySoundAt(logSound, blockSel.Position.X, blockSel.Position.Y, blockSel.Position.Z, byPlayer);
 					if (IsDone && FirstFreeSlot == 0)
-						state = WoodRackStates.Starting;
+						State = WoodRackStates.Starting;
 					return true;
 				}
 			}
@@ -209,7 +209,7 @@ namespace StoneRoad
 		public override void FromTreeAttributes(ITreeAttribute tree, IWorldAccessor worldForResolve)
 		{
 			base.FromTreeAttributes(tree, worldForResolve);
-			state = (WoodRackStates) tree.GetInt("state");
+			State = (WoodRackStates) tree.GetInt("state");
 			dryingUntilTotalDays = tree.GetDouble("dryingUntilTotalDays");
 			dryingStartTotalDays = tree.GetDouble("dryingStartTotalDays");
 			if (Api?.Side == EnumAppSide.Client)
@@ -219,29 +219,53 @@ namespace StoneRoad
 		public override void ToTreeAttributes(ITreeAttribute tree)
 		{
 			base.ToTreeAttributes(tree);
-			tree.SetInt("state", (int)state);
+			tree.SetInt("state", (int)State);
 			tree.SetDouble("dryingUntilTotalDays", dryingUntilTotalDays);
 			tree.SetDouble("dryingStartTotalDays", dryingStartTotalDays);
 		}
 
+		public void GetContentsInfo(StringBuilder sb)
+		{
+			// Seems superfluous for the drying rack
+			/*
+			for (int i = 0; i < maxSlots - 1; i++)
+				if (!inventory[i].Empty)
+					if (inventory[i].Itemstack.Collectible.Code.Path.StartsWith("uncuredplank-"))
+						sb.AppendLine(Lang.Get("stoneroad:item-" + inventory[i].Itemstack.Collectible.Code.Path));
+					else
+						sb.AppendLine(Lang.Get("item-" + inventory[i].Itemstack.Collectible.Code.Path));
+			*/
+		}
+
+		public void GetProgressInfo(StringBuilder sb)
+		{
+			double hoursPassed = (Api.World.Calendar.TotalDays - dryingStartTotalDays) * 24;
+			BlockWoodRack block = Block as BlockWoodRack;
+			double lumberDryingHours = block.LumberDryingHours;
+
+			if (lumberDryingHours - hoursPassed < 1.1)
+				sb.AppendLine( Lang.Get("stoneroad:Done in about an hour.") );
+			else
+			{
+				string timePassedText = hoursPassed > 24 ?
+					Lang.Get("{0} days", Math.Round(hoursPassed / Api.World.Calendar.HoursPerDay, 1)) :
+					Lang.Get("{0} hours", Math.Round(hoursPassed));
+				string timeTotalText = lumberDryingHours > 24 ?
+					Lang.Get("{0} days", Math.Round(lumberDryingHours / Api.World.Calendar.HoursPerDay, 1)) :
+					Lang.Get("{0} hours", Math.Round(lumberDryingHours));
+				sb.AppendLine(Lang.Get("stoneroad:Drying for {0} / {1}", timePassedText, timeTotalText));
+			}
+		}
+
 		public override void GetBlockInfo(IPlayer forPlayer, StringBuilder sb)
 		{
-			switch (state)
-			{
-				case WoodRackStates.Starting:
-					sb.AppendLine(Lang.Get("stoneroad:blockdesc-woodrack-starting"));
-					break;
-				case WoodRackStates.Drying:
-					double timeRemaining = (dryingUntilTotalDays - Api.World.Calendar.TotalDays) * 24.0;
-					if (timeRemaining < 1.5)
-						sb.AppendLine(Lang.Get("stoneroad:blockdesc-woodrack-dry-1-hour"));
-					else
-						sb.AppendLine(Lang.Get("stoneroad:blockdesc-woodrack-dry-x-hours", (int)(timeRemaining + 0.5)));
-					break;
-				case WoodRackStates.Done:
-					sb.AppendLine(Lang.Get("stoneroad:blockdesc-woodrack-done"));
-					break;
-			}
+			// When base.GetPlacedBlockInfo is called
+
+			GetContentsInfo(sb);
+			if (sb.Length > 0)
+				sb.AppendLine();
+
+			// Then the blockdesc goes down here.
 		}
 
 		private MeshData GenBlockMesh(ItemStack lumberSlot, int index)

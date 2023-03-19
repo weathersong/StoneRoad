@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Vintagestory.API.Client;
 using Vintagestory.API.Common;
+using Vintagestory.API.Config;
 using Vintagestory.API.MathTools;
 using Vintagestory.API.Util;
 
@@ -140,5 +141,28 @@ namespace StoneRoad
 				return be.OnInteract(byPlayer, blockSel);
 			return base.OnBlockInteractStart(world, byPlayer, blockSel);
 		}
+
+		public override string GetPlacedBlockInfo(IWorldAccessor world, BlockPos pos, IPlayer forPlayer)
+		{
+			if (world.BlockAccessor.GetBlockEntity(pos) is BEStraighteningRack be)
+			{
+				StringBuilder sb = new StringBuilder();
+				switch (be.State)
+				{
+					case BEStraighteningRack.StraightenRackStates.Starting:
+					default:
+						return base.GetPlacedBlockInfo(world, pos, forPlayer);
+					case BEStraighteningRack.StraightenRackStates.Steaming:
+						be.GetProgressInfo(sb);
+						return sb.ToString();
+					case BEStraighteningRack.StraightenRackStates.Done:
+						be.GetContentsInfo(sb);
+						return sb.ToString() + "\n" + Lang.Get("stoneroad:blockdesc-straightenrack-done");
+				}
+			}
+
+			return base.GetPlacedBlockInfo(world, pos, forPlayer);
+		}
+
 	}
 }

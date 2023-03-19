@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Text;
 using Vintagestory.API.Client;
 using Vintagestory.API.Common;
+using Vintagestory.API.Config;
 using Vintagestory.API.MathTools;
 using Vintagestory.API.Util;
+using static StoneRoad.BEWoodRack;
 
 namespace StoneRoad
 {
@@ -65,16 +67,16 @@ namespace StoneRoad
 
 		public override bool TryPlaceBlock(IWorldAccessor world, IPlayer byPlayer, ItemStack itemstack, BlockSelection blockSel, ref string failureCode)
 		{
-			var facing = SuggestedHVOrientation(byPlayer, blockSel)[0].ToString();
+			string facing = SuggestedHVOrientation(byPlayer, blockSel)[0].ToString();
 			bool placed;
 			placed = base.TryPlaceBlock(world, byPlayer, itemstack, blockSel, ref failureCode);
 			if (placed)
 			{
-				var block = this.api.World.BlockAccessor.GetBlock(blockSel.Position, BlockLayersAccess.Default);
-				var newPath = block.Code.Path;
+				Block block = api.World.BlockAccessor.GetBlock(blockSel.Position, BlockLayersAccess.Default);
+				string newPath = block.Code.Path;
 				newPath = newPath.Replace("north", facing);
-				block = this.api.World.GetBlock(block.CodeWithPath(newPath));
-				this.api.World.BlockAccessor.SetBlock(block.BlockId, blockSel.Position);
+				block = api.World.GetBlock(block.CodeWithPath(newPath));
+				api.World.BlockAccessor.SetBlock(block.BlockId, blockSel.Position);
 			}
 			return placed;
 		}
@@ -85,5 +87,27 @@ namespace StoneRoad
 				return be.OnInteract(byPlayer, blockSel);
 			return base.OnBlockInteractStart(world, byPlayer, blockSel);
 		}
+
+		public override string GetPlacedBlockInfo(IWorldAccessor world, BlockPos pos, IPlayer forPlayer)
+		{
+			if (world.BlockAccessor.GetBlockEntity(pos) is BEWoodRack be)
+			{
+				StringBuilder sb = new StringBuilder();
+				switch (be.State)
+				{
+					case BEWoodRack.WoodRackStates.Starting:
+					default:
+						return base.GetPlacedBlockInfo(world, pos, forPlayer);
+					case BEWoodRack.WoodRackStates.Drying:
+						be.GetProgressInfo(sb);
+						return sb.ToString();
+					case BEWoodRack.WoodRackStates.Done:
+						return Lang.Get("stoneroad:blockdesc-woodrack-done");
+				}
+			}
+
+			return base.GetPlacedBlockInfo(world, pos, forPlayer);
+		}
+
 	}
 }

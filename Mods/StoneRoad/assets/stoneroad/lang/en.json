@@ -63,10 +63,11 @@
   "blockdesc-choppingblock-empty": "Add a log by right-clicking with the log in hand.",
   "blockdesc-choppingblock-log": "Right-click with an axe to chop. Right-click with an adze to hew.",
 
-  "blockdesc-woodrack-starting": "Load up with firewood and/or raw lumber to begin drying.",
-  "blockdesc-woodrack-dry-x-hours": "Finishes drying in {0} hours.",
-  "blockdesc-woodrack-dry-1-hour": "Finishes drying in about an hour.",
+  "block-woodrack-*": "Wood drying rack",
+  "blockdesc-woodrack-*": "Load up with firewood and/or raw lumber to begin drying.",
+  "Drying for {0} / {1}": "Drying for {0} / {1}",
   "blockdesc-woodrack-done": "Done drying.",
+  "Done in about an hour.": "Done in about an hour.",
 
   "item-charcoal-poor": "Charcoal (Poor)",
   "item-charcoal-fine": "Charcoal (Fine)",
@@ -106,16 +107,15 @@
   "lit-starting": "Lit. {0} in-game minutes before the pile ignites,\nmake sure it's not exposed to air!",
   "Unlit.": "Unlit.",
 
-  "block-woodrack-*": "Wood drying rack",
-
   "block-straightenrackshelfblock-raw": "Straightening rack shelf (Raw)",
   "block-straightenrackshelfblock-burned": "Straightening rack shelf (Fired)",
 
   "block-straightenrack-*": "Straightening rack",
-  "block-steamcabinet-lit-*": "Straightening rack (Lit)",
+  "block-straightenrack-lit-*": "Straightening rack (Lit)",
   "blockdesc-straightenrack-*": "Add 4 firewood, and up to 12 warped lumber, then light with a torch to start the process.",
   "blockhelp-straightenrack-rightclick": "Load / Unload",
-  "blockhelp-straightenrack-complete": "complete",
+  "Steaming for {0} / {1}": "Steaming for {0} / {1}",
+  "blockdesc-straightenrack-done": "Done cooking.",
 
   "block-crucible-uncured": "Shaped crucible",
   "block-crucible-wet": "Wet raw crucible",

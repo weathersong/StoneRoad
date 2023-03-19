@@ -44,6 +44,7 @@ This doesn't work with all fruits mainly because the logic is very simple and ca
 
 ***
 
+## Final Notes
 This mod isn't generally intended for public use, but is public here to act as a useful example of several types of systems. It has only had light testing in-game, and only on version 1.17.11.
 
 Some of the code is also adapted from Primitive Survival (or the game's own files), but has been pretty extensively modified to suit the mod's own function.

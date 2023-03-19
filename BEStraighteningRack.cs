@@ -9,6 +9,7 @@ using Vintagestory.API.MathTools;
 using Vintagestory.API.Util;
 using Vintagestory.GameContent;
 using static StoneRoad.BEWoodRack;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace StoneRoad
 {
@@ -379,9 +380,9 @@ namespace StoneRoad
 			tree.SetDouble("burningStartTotalDays", burningStartTotalDays);
 		}
 
-		public override void GetBlockInfo(IPlayer forPlayer, StringBuilder sb)
+		public void GetContentsInfo(StringBuilder sb)
 		{
-			for (int i = 0; i < maxSlots-1; i++)
+			for (int i = 0; i < maxSlots - 1; i++)
 				if (!inventory[i].Empty)
 					if (inventory[i].Itemstack.Collectible.Code.Path.StartsWith("uncuredplank-"))
 						sb.AppendLine(Lang.Get("stoneroad:item-" + inventory[i].Itemstack.Collectible.Code.Path));
@@ -389,15 +390,39 @@ namespace StoneRoad
 						sb.AppendLine(Lang.Get("item-" + inventory[i].Itemstack.Collectible.Code.Path));
 
 			int WoodCount = WoodSlot.Empty ? 0 : WoodStack.StackSize;
-			sb.AppendLine($"{WoodCount}/4 {Lang.Get("item-firewood")}");
+			if (WoodCount > 0)
+				sb.AppendLine($"{WoodCount}/4 {Lang.Get("item-firewood")}");
+		}
 
-			double percentComplete = Math.Round((Api.World.Calendar.TotalDays - burningStartTotalDays) / (burningUntilTotalDays - burningStartTotalDays) * 100, 0);
+		public void GetProgressInfo(StringBuilder sb)
+		{
+			double hoursPassed = (Api.World.Calendar.TotalDays - burningStartTotalDays) * 24;
+			BlockStraighteningRack block = Block as BlockStraighteningRack;
+			double lumberStraighteningHours = block.LumberStraighteningHours;
 
-			if (0 <= percentComplete && percentComplete < 100 && IsBurning)
-				sb.AppendLine("" + percentComplete + "% " + Lang.Get("stoneroad:blockhelp-straightenrack-complete"));
+			if (lumberStraighteningHours - hoursPassed < 1.1)
+				sb.AppendLine(Lang.Get("stoneroad:Done in about an hour."));
+			else
+			{
+				string timePassedText = hoursPassed > 24 ?
+					Lang.Get("{0} days", Math.Round(hoursPassed / Api.World.Calendar.HoursPerDay, 1)) :
+					Lang.Get("{0} hours", Math.Round(hoursPassed));
+				string timeTotalText = lumberStraighteningHours > 24 ?
+					Lang.Get("{0} days", Math.Round(lumberStraighteningHours / Api.World.Calendar.HoursPerDay, 1)) :
+					Lang.Get("{0} hours", Math.Round(lumberStraighteningHours));
+				sb.AppendLine(Lang.Get("stoneroad:Steaming for {0} / {1}", timePassedText, timeTotalText));
+			}
+		}
 
-			sb.AppendLine();
-			//sb.AppendLine(string.Format("DEBUG: {3} , Current total days: {0} , BurningStart total days: {1} , BurningUntil total days: {2}", this.Api.World.Calendar.TotalDays, this.burningStartTotalDays, this.burningUntilTotalDays, this.burning));
+		public override void GetBlockInfo(IPlayer forPlayer, StringBuilder sb)
+		{
+			// When base.GetPlacedBlockInfo is called
+
+			GetContentsInfo(sb);
+			if (sb.Length > 0)
+				sb.AppendLine();
+
+			// Then the blockdesc goes down here.
 		}
 
 		private MeshData GenLumberMesh(ItemStack lumberStack, int index)
