@@ -119,6 +119,8 @@
 
   "block-crucible-uncured": "Shaped crucible",
   "block-crucible-wet": "Wet raw crucible",
+  "block-crucible-dry": "Dried crucible",
+  "block-crucible-ready": "Readied crucible",
 
   "_comment": "For the mod The Stone Road."
 }

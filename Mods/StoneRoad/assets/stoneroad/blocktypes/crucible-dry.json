@@ -1,5 +1,5 @@
 {
-	"code": "crucible-wet",
+	"code": "crucible-dry",
 	"behaviors": [
 		{ "name": "GroundStorable", "properties": { "layout": "Quadrants", "placeRemoveSound": "sounds/player/build", "collisionBox": { "x1": 0, "y1": 0, "z1": 0, "x2": 1, "y2": 0.4375, "z2": 1 } } },
 		{ "name": "Unplaceable", "__comment": "The ground storable obsoletes this being a block. Should be an item, but is kept a block for backwards compatibility" },
@@ -43,14 +43,5 @@
 		"rotation": { "x": 0, "y": 22, "z": -100 },
 		"origin": { "x": 0.5, "y": 0, "z": 0.5 },
 		"scale": 0.76
-	},	
-	"transitionableProps": [
-		{
-			"type": "Dry",
-			"freshHours": { "avg": 0 },
-			"transitionHours": { "avg": 48 },
-			"transitionedStack": { "type": "block", "code": "crucible-dry" },
-			"transitionRatio": 1
-		}
-	]	
+	}
 }
