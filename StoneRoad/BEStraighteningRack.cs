@@ -464,7 +464,7 @@ namespace StoneRoad
 			int i = 0;
 			if (Api.World.BlockAccessor.GetBlock(Pos, BlockLayersAccess.Default) is BlockStraighteningRack block)
 			{
-				ITexPositionSource texture = tesselator.GetTexSource(block);
+				ITexPositionSource texture = tesselator.GetTextureSource(block);
 				// Base model
 				mesh = block.GenMesh(Api as ICoreClientAPI, shapeBase, texture, i);
 				mesher.AddMeshData(mesh);

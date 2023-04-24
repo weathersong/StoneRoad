@@ -10,6 +10,7 @@
   "textures": {
     "firewoodfront": "game:block/wood/firewood/north",
     "firewoodside": "game:block/wood/firewood/side",
+    "bark": "game:block/wood/firewood/bark",
     "oak": "game:block/wood/oak",
     "wood": "game:block/wood/planks/oak1"
   },

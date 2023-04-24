@@ -304,9 +304,11 @@ namespace StoneRoad
 			Shape shape = asset.ToObject<Shape>();
 			MeshData mesh = null;
 
-			try {
+			try
+			{
 				capi.Tesselator.TesselateShape(shapePath, shape, out mesh, texture, new Vec3f(0, 0, 0));
-			} catch { return mesh; }
+			}
+			catch { return mesh; }
 
 			mesh.Translate( 0.25f * (index % 4) + (0.1f * (index % 4)) - 0.15f, (index / 4 * 0.87f) + 0.25f, 0f );
 
@@ -323,7 +325,10 @@ namespace StoneRoad
 
 			if (Api.World.BlockAccessor.GetBlock(Pos, BlockLayersAccess.Default) is BlockWoodRack block)
 			{
-				var texture = tesselator.GetTexSource(block);
+				// Note the texture source is this block, acting as a kind of texture atlas.
+				// Any textures that must be on added meshes (ie GetItemMesh) must have corresponding textures on *this* block.
+				// For example, firewood2's textures (bark, firewoodfront, firewoodside) must all be in the textures{} block of shapes/woodrack.json!
+				var texture = tesselator.GetTextureSource(block);
 
 				// Base model
 				mesh = block.GenMesh(Api as ICoreClientAPI, texture);

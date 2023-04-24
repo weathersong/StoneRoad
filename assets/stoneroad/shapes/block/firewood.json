@@ -8,9 +8,9 @@
 	"textureSizes": {
 	},
   "textures": {
-    "bark": "block/wood/firewood/bark",
-    "front": "block/wood/firewood/north",
-    "side": "block/wood/firewood/side"
+    "bark": "game:block/wood/firewood/bark",
+    "front": "game:block/wood/firewood/north",
+    "side": "game:block/wood/firewood/side"
   },
 	"elements": [
 		{
