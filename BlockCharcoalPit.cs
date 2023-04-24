@@ -9,7 +9,7 @@ using Vintagestory.GameContent;
 
 namespace StoneRoad
 {
-	public class BlockCharcoalPit : Block
+	public class BlockCharcoalPit : Block, IIgnitable
 	{
 		//Vec3f[] basePos;
 		WorldInteraction[] interactions;
@@ -43,15 +43,15 @@ namespace StoneRoad
 			});
 		}
 
-		public override EnumIgniteState OnTryIgniteBlock(EntityAgent byEntity, BlockPos pos, float secondsIgniting)
+		public Vintagestory.GameContent.EnumIgniteState OnTryIgniteBlock(EntityAgent byEntity, BlockPos pos, float secondsIgniting)
 		{
 			BECharcoalPit becp = api.World.BlockAccessor.GetBlockEntity(pos) as BECharcoalPit;
-			if (becp == null || becp.Lit) return EnumIgniteState.NotIgnitablePreventDefault;
+			if (becp == null || becp.Lit) return Vintagestory.GameContent.EnumIgniteState.NotIgnitablePreventDefault;
 
-			return secondsIgniting > 3 ? EnumIgniteState.IgniteNow : EnumIgniteState.Ignitable;
+			return secondsIgniting > 3 ? Vintagestory.GameContent.EnumIgniteState.IgniteNow : Vintagestory.GameContent.EnumIgniteState.Ignitable;
 		}
 
-		public override void OnTryIgniteBlockOver(EntityAgent byEntity, BlockPos pos, float secondsIgniting, ref EnumHandling handling)
+		public void OnTryIgniteBlockOver(EntityAgent byEntity, BlockPos pos, float secondsIgniting, ref EnumHandling handling)
 		{
 			BECharcoalPit becp = api.World.BlockAccessor.GetBlockEntity(pos) as BECharcoalPit;
 

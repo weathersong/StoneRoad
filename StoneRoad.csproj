@@ -27,7 +27,7 @@
   </ItemGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="call &quot;D:\Games\Vintage Story\StoneRoad\postbuild.cmd&quot;&#xD;&#xA;" />
+    <Exec Command="call &quot;postbuild.cmd&quot;&#xD;&#xA;" />
   </Target>
 
 </Project>

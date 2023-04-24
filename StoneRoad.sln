@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.33414.496
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StoneRoad", "StoneRoad.csproj", "{B19CD79E-C5EB-46F7-AA31-F80389AF6DFE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StoneRoad", "StoneRoad.csproj", "{B19CD79E-C5EB-46F7-AA31-F80389AF6DFE}"
 EndProject
 Project("{911E67C6-3D85-4FCE-B560-20A9C3E3FF48}") = "Vintagestory", "C:\Vintagestory\Vintagestory.exe", "{AD395F58-FA2A-4663-845C-7EF65FA4C7B9}"
 	ProjectSection(DebuggerProjectSystem) = preProject
@@ -11,7 +11,7 @@ Project("{911E67C6-3D85-4FCE-B560-20A9C3E3FF48}") = "Vintagestory", "C:\Vintages
 		Executable = C:\Vintagestory\Vintagestory.exe
 		RemoteMachine = TEG
 		StartingDirectory = C:\Vintagestory
-		Arguments = -oTestStoneRoad -pcreativebuilding --addModPath="D:\Games\Vintage Story\StoneRoad\Mods"
+		Arguments = -oTestStoneRoad -pcreativebuilding --addModPath="D:\Games\Vintage Story\_ Builds"
 		Environment = Default
 		LaunchingEngine = 00000000-0000-0000-0000-000000000000
 		UseLegacyDebugEngines = No

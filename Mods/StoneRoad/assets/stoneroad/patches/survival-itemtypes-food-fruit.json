@@ -1,8 +1,0 @@
-[
-  {
-    "op": "add",
-    "path": "/class",
-    "value": "ItemJuicyFruit",
-    "file": "game:itemtypes/food/fruit.json"
-  }
-]

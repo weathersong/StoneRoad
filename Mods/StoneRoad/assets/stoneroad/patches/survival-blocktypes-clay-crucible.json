@@ -1,7 +1,0 @@
-[
-  {
-    "op": "remove",
-    "path": "/combustiblePropsByType/crucible-raw",
-    "file": "game:blocktypes/clay/crucible.json"
-  }
-]

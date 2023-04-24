@@ -12,7 +12,7 @@ using Vintagestory.GameContent;
 
 namespace StoneRoad
 {
-	public class BEWoodRack : BlockEntityDisplayCase
+	public class BEWoodRack : BlockEntityDisplayCase, ITexPositionSource
 	{
 		// Each slot accomodates 1 board or 2 firewood
 		private readonly int maxSlots = 8;
@@ -20,8 +20,10 @@ namespace StoneRoad
 		protected static readonly Random Rnd = new Random();
 
 		private BlockFacing ownFacing;
-		public override string InventoryClassName => "woodrack";
+
+		protected InventoryGeneric inventory;
 		public override InventoryBase Inventory => this.inventory;
+		public override string InventoryClassName => "woodrack";
 		private int FirstFreeSlot => GetFirstFreeSlot();
 
 		public enum WoodRackStates
@@ -43,7 +45,7 @@ namespace StoneRoad
 		{
 			State = WoodRackStates.Starting;
 			inventory = new InventoryGeneric(maxSlots, null, null);
-			meshes = new MeshData[maxSlots];
+			//meshes = new MeshData[maxSlots];
 		}
 
 		public override void Initialize(ICoreAPI api)

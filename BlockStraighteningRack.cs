@@ -6,13 +6,14 @@ using Vintagestory.API.Common;
 using Vintagestory.API.Config;
 using Vintagestory.API.MathTools;
 using Vintagestory.API.Util;
+using Vintagestory.GameContent;
 
 namespace StoneRoad
 {
 
 	// Originally based on Primitive Survival's (Meat) Smoker, credit to Spear&Fang!
 
-	public class BlockStraighteningRack : Block
+	public class BlockStraighteningRack : Block, IIgnitable
 	{
 		public StoneRoadMod SRMod;
 		public double LumberStraighteningHours;
@@ -71,15 +72,15 @@ namespace StoneRoad
 			}
 		}
 
-		public override EnumIgniteState OnTryIgniteBlock(EntityAgent byEntity, BlockPos pos, float secondsIgniting)
+		public Vintagestory.GameContent.EnumIgniteState OnTryIgniteBlock(EntityAgent byEntity, BlockPos pos, float secondsIgniting)
 		{
 			BEStraighteningRack be = byEntity.World.BlockAccessor.GetBlockEntity(pos) as BEStraighteningRack;
 			if (!be.CanIgnite())
-				return EnumIgniteState.NotIgnitablePreventDefault;
-			return secondsIgniting > 4 ? EnumIgniteState.IgniteNow : EnumIgniteState.Ignitable;
+				return Vintagestory.GameContent.EnumIgniteState.NotIgnitablePreventDefault;
+			return secondsIgniting > 4 ? Vintagestory.GameContent.EnumIgniteState.IgniteNow : Vintagestory.GameContent.EnumIgniteState.Ignitable;
 		}
 
-		public override void OnTryIgniteBlockOver(EntityAgent byEntity, BlockPos pos, float secondsIgniting, ref EnumHandling handling)
+		public void OnTryIgniteBlockOver(EntityAgent byEntity, BlockPos pos, float secondsIgniting, ref EnumHandling handling)
 		{
 			handling = EnumHandling.PreventDefault;
 			BEStraighteningRack be = byEntity.World.BlockAccessor.GetBlockEntity(pos) as BEStraighteningRack;

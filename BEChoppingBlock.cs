@@ -14,11 +14,13 @@ using static StoneRoad.BEWoodRack;
 
 namespace StoneRoad
 {
-	public class BEChoppingBlock : BlockEntityDisplayCase
+	public class BEChoppingBlock : BlockEntityDisplayCase, ITexPositionSource
 	{
 		private BlockFacing ownFacing;
-		public override string InventoryClassName => "woodrack";
+
+		protected InventoryGeneric inventory;
 		public override InventoryBase Inventory => this.inventory;
+		public override string InventoryClassName => "woodrack";
 		public bool IsInventoryEmpty => this.inventory[0].Empty;
 
 		private AssetLocation logSound;
@@ -26,7 +28,7 @@ namespace StoneRoad
 		public BEChoppingBlock()
 		{
 			this.inventory = new InventoryGeneric(1, null, null);
-			this.meshes = new MeshData[1];
+			//this.meshes = new MeshData[1];
 		}
 
 		public override void Initialize(ICoreAPI api)
@@ -53,8 +55,10 @@ namespace StoneRoad
 			if (itemStack != null && itemStack.Collectible != null)
 				blockPath = itemStack.Collectible.Code.Path;
 
+			bool sneak = byPlayer.Entity.Controls.Sneak;
+
 			// Place down a log for chopping
-			if (playerStack?.Collectible is BlockLog && IsInventoryEmpty)
+			if (playerPath.StartsWith("log-") && IsInventoryEmpty)
 			{
 				Api.World.PlaySoundAt(logSound, blockSel.Position.X, blockSel.Position.Y, blockSel.Position.Z, byPlayer);
 
@@ -74,7 +78,8 @@ namespace StoneRoad
 			}
 
 			// Place down a stripped log
-			else if (playerPath.StartsWith("strippedlog-") && IsInventoryEmpty)
+			// 1.18: debarkedlog- instead of strippedlog-
+			else if (playerPath.StartsWith("debarkedlog-") && IsInventoryEmpty)
 			{
 				Api.World.PlaySoundAt(logSound, blockSel.Position.X, blockSel.Position.Y, blockSel.Position.Z, byPlayer);
 
@@ -94,47 +99,49 @@ namespace StoneRoad
 			}
 
 			// Chop a placed log
-			else if (playerPath.StartsWith("axe-") && itemStack?.Collectible is BlockLog blockLogToChop)
+			else if (playerPath.StartsWith("axe-") && !sneak && blockPath.StartsWith("log-") && itemStack?.Collectible is BlockLog blockLogToChop)
 			{
 				// what wood type is it?
 				//string wood = blockToChop.Attributes["wood"].ToString(); // Code.Path = log-placed-larch-ud
 				string wood = blockLogToChop.Variant["wood"];
 				// damage axe
-				playerStack.Collectible.DamageItem(this.Api.World, byPlayer.Entity, playerSlot, 5);
+				playerStack.Collectible.DamageItem(Api.World, byPlayer.Entity, playerSlot, 5);
 				// particles
 				blockLogToChop.SpawnBlockBrokenParticles(blockSel.Position);
 				// sound
-				this.Api.World.PlaySoundAt(blockLogToChop.Sounds?.GetBreakSound(byPlayer), this.Pos.X, this.Pos.Y, this.Pos.Z, byPlayer);
+				Api.World.PlaySoundAt(blockLogToChop.Sounds?.GetBreakSound(byPlayer), this.Pos.X, this.Pos.Y, this.Pos.Z, byPlayer);
 				// swap to empty block - this also empties inventory
 				ToggleContentState();
 				//inventory[0].TakeOutWhole();
 				// drop halves
-				//AssetLocation dropAsset = new AssetLocation("game:firewood"); // just firewood works too
 				AssetLocation dropAsset = new AssetLocation("stoneroad", $"loghalf-{wood}-north");
-				if (dropAsset != null)
+				Block dropBlock = Api.World.GetBlock(dropAsset);
+				if (dropBlock != null)
 					for (int i = 0; i < 2 ; i++)
-						this.Api.World.SpawnItemEntity(new ItemStack(this.Api.World.GetBlock(dropAsset)), this.Pos.ToVec3d().Add(0.5, 1.0 + (i / 10), 0.5));
+						Api.World.SpawnItemEntity(new ItemStack(dropBlock), this.Pos.ToVec3d().Add(0.5, 1.0 + (i / 10), 0.5));
 
 				return true;
 			}
 
 			// Chop a half log
-			else if (playerPath.StartsWith("axe-") && itemStack?.Collectible is BlockLogHalf blockHalfLogToChop)
+			else if (playerPath.StartsWith("axe-") && !sneak && itemStack?.Collectible is BlockLogHalf blockHalfLogToChop)
 			{
-				playerStack.Collectible.DamageItem(this.Api.World, byPlayer.Entity, playerSlot, 5);
+				playerStack.Collectible.DamageItem(Api.World, byPlayer.Entity, playerSlot, 5);
 				blockHalfLogToChop.SpawnBlockBrokenParticles(blockSel.Position);
 				Api.World.PlaySoundAt(logSound, blockSel.Position.X, blockSel.Position.Y, blockSel.Position.Z, byPlayer);
 				ToggleContentState();
 				AssetLocation dropAsset = new AssetLocation("firewood");
-				if (dropAsset != null)
+				Item dropItem = Api.World.GetItem(dropAsset);
+				if (dropItem != null)
 					for (int i = 0; i < 2; i++)
-						this.Api.World.SpawnItemEntity(new ItemStack(this.Api.World.GetItem(dropAsset)), this.Pos.ToVec3d().Add(0.5, 1.0 + (i / 10), 0.5));
+						Api.World.SpawnItemEntity(new ItemStack(dropItem), this.Pos.ToVec3d().Add(0.5, 1.0 + (i / 10), 0.5));
 
 				return true;
 			}
 
 			// Chop a stripped log
-			else if (playerPath.StartsWith("axe-") && blockPath.StartsWith("strippedlog-"))
+			// 1.18: using vanilla debarkedlog- instead of AncientTools strippedlog-
+			else if (playerPath.StartsWith("axe-") && !sneak && blockPath.StartsWith("debarkedlog-"))
 			{
 				string wood = "";
 				Block blockToChop = itemStack.Collectible as Block;
@@ -145,9 +152,10 @@ namespace StoneRoad
 				Api.World.PlaySoundAt(logSound, blockSel.Position.X, blockSel.Position.Y, blockSel.Position.Z, byPlayer);
 				ToggleContentState();
 				AssetLocation dropAsset = new AssetLocation("stoneroad", $"uncuredplank-raw-{wood}");
-				if (dropAsset != null)
+				Item dropItem = Api.World.GetItem(dropAsset);
+				if (dropItem != null)
 					for (int i = 0; i < 8; i++)
-						this.Api.World.SpawnItemEntity(new ItemStack(this.Api.World.GetItem(dropAsset)), this.Pos.ToVec3d().Add(0.5, 1.0 + (i / 10), 0.5));
+						Api.World.SpawnItemEntity(new ItemStack(dropItem), this.Pos.ToVec3d().Add(0.5, 1.0 + (i / 10), 0.5));
 
 				return true;
 			}
@@ -159,50 +167,65 @@ namespace StoneRoad
 				Api.World.PlaySoundAt(logSound, blockSel.Position.X, blockSel.Position.Y, blockSel.Position.Z, byPlayer);
 				ToggleContentState();
 				AssetLocation dropAsset = new AssetLocation("stick");
-				if (dropAsset != null)
+				Item dropItem = Api.World.GetItem(dropAsset);
+				if (dropItem != null)
 					for (int i = 0; i < 3; i++)
-						this.Api.World.SpawnItemEntity(new ItemStack(this.Api.World.GetItem(dropAsset)), this.Pos.ToVec3d().Add(0.5, 1.0 + (i / 10), 0.5));
+						Api.World.SpawnItemEntity(new ItemStack(dropItem), this.Pos.ToVec3d().Add(0.5, 1.0 + (i / 10), 0.5));
 
 				return true;
 			}
 
-			// Strip a log - this is all AncientTools stuff, the adze, the bark, and the stripped log
-			else if (playerPath.StartsWith("adze-") && itemStack?.Collectible is BlockLog blockLogToStrip)
+			// Strip a log
+			// 1.18: This no longer depends on the adze (Ancient Tools), but is left in for future compatibility
+			else if (
+				( (playerPath.StartsWith("axe-") && sneak) || playerPath.StartsWith("adze-") ) &&
+				blockPath.StartsWith("log-") && itemStack?.Collectible is BlockLog blockLogToStrip
+			)
 			{
 				string wood = blockLogToStrip.Variant["wood"];
-				playerStack.Collectible.DamageItem(this.Api.World, byPlayer.Entity, playerSlot, 3);
+				playerStack.Collectible.DamageItem(Api.World, byPlayer.Entity, playerSlot, 3);
 				blockLogToStrip.SpawnBlockBrokenParticles(blockSel.Position);
-				this.Api.World.PlaySoundAt(blockLogToStrip.Sounds?.GetBreakSound(byPlayer), this.Pos.X, this.Pos.Y, this.Pos.Z, byPlayer);
+				Api.World.PlaySoundAt(blockLogToStrip.Sounds?.GetBreakSound(byPlayer), this.Pos.X, this.Pos.Y, this.Pos.Z, byPlayer);
 				ToggleContentState();
 				// drop bark if possible
-				AssetLocation dropAsset = new AssetLocation("ancienttools", $"bark-{wood}");
-				if (dropAsset != null)
+				AssetLocation dropAsset = new AssetLocation($"{wood}bark") ?? new AssetLocation("ancienttools", $"bark-{wood}");
+				Item dropItem = Api.World.GetItem(dropAsset);
+				if (dropItem != null)
 					for (int i = 0; i < 4; i++)
-						this.Api.World.SpawnItemEntity(new ItemStack(this.Api.World.GetItem(dropAsset)), this.Pos.ToVec3d().Add(0.5, 1.5 + (i / 10), 0.5));
+						Api.World.SpawnItemEntity(new ItemStack(dropItem), this.Pos.ToVec3d().Add(0.5, 1.5 + (i / 10), 0.5));
 				// stripped log
-				dropAsset = new AssetLocation("ancienttools", $"strippedlog-{wood}-ud");
-				if (dropAsset != null)
-					this.Api.World.SpawnItemEntity(new ItemStack(this.Api.World.GetBlock(dropAsset)), this.Pos.ToVec3d().Add(0.5, 1.0, 0.5));
+				//dropAsset = new AssetLocation("ancienttools", $"strippedlog-{wood}-ud");
+				// 1.18: these are now in vanilla
+				dropAsset = new AssetLocation($"debarkedlog-{wood}-ud");
+				Block dropBlock = Api.World.GetBlock(dropAsset);
+				if (dropBlock != null)
+					Api.World.SpawnItemEntity(new ItemStack(dropBlock), this.Pos.ToVec3d().Add(0.5, 1.0, 0.5));
 
 				return true;
 			}
 
 			// Strip a half log
-			else if (playerPath.StartsWith("adze-") && itemStack?.Collectible is BlockLogHalf blockHalfLogToStrip)
+			// 1.18: Also decoupled from Ancient Tools
+			else if (
+				( (playerPath.StartsWith("axe-") && sneak) || playerPath.StartsWith("adze-") ) &&
+				itemStack?.Collectible is BlockLogHalf blockHalfLogToStrip
+			)
 			{
 				string wood = blockHalfLogToStrip.Variant["wood"];
-				playerStack.Collectible.DamageItem(this.Api.World, byPlayer.Entity, playerSlot, 5);
+				playerStack.Collectible.DamageItem(Api.World, byPlayer.Entity, playerSlot, 5);
 				blockHalfLogToStrip.SpawnBlockBrokenParticles(blockSel.Position);
 				Api.World.PlaySoundAt(logSound, blockSel.Position.X, blockSel.Position.Y, blockSel.Position.Z, byPlayer);
 				ToggleContentState();
-				AssetLocation dropAsset = new AssetLocation("ancienttools", $"bark-{wood}");
-				if (dropAsset != null)
+				AssetLocation dropAsset = new AssetLocation($"{wood}bark") ?? new AssetLocation("ancienttools", $"bark-{wood}");
+				Item dropItem = Api.World.GetItem(dropAsset);
+				if (dropItem != null)
 					for (int i = 0; i < 2; i++)
-						this.Api.World.SpawnItemEntity(new ItemStack(this.Api.World.GetItem(dropAsset)), this.Pos.ToVec3d().Add(0.5, 1.5 + (i / 10), 0.5));
+						Api.World.SpawnItemEntity(new ItemStack(dropItem), this.Pos.ToVec3d().Add(0.5, 1.5 + (i / 10), 0.5));
 				dropAsset = new AssetLocation("stoneroad", $"uncuredplank-raw-{wood}");
-				if (dropAsset != null)
+				dropItem = Api.World.GetItem(dropAsset);
+				if (dropItem != null)
 					for (int i = 0; i < 4; i++)
-						this.Api.World.SpawnItemEntity(new ItemStack(this.Api.World.GetItem(dropAsset)), this.Pos.ToVec3d().Add(0.5, 1.0 + (i / 10), 0.5));
+						Api.World.SpawnItemEntity(new ItemStack(dropItem), this.Pos.ToVec3d().Add(0.5, 1.0 + (i / 10), 0.5));
 
 				return true;
 			}
@@ -212,7 +235,7 @@ namespace StoneRoad
 			{
 				if (TryTake(byPlayer, this.inventory[0]))
 				{
-					this.Api.World.PlaySoundAt(this.logSound, blockSel.Position.X, blockSel.Position.Y, blockSel.Position.Z, byPlayer);
+					Api.World.PlaySoundAt(this.logSound, blockSel.Position.X, blockSel.Position.Y, blockSel.Position.Z, byPlayer);
 					ToggleContentState();
 					return true;
 				}

@@ -1,9 +1,0 @@
-[
-  {
-    "op": "add",
-    "path": "/class",
-    "value": "ItemJuicyFruit",
-    "file": "wildcraft:itemtypes/food/fruit.json",
-    "dependsOn": [ { "modid": "wildcraft" } ]
-  }
-]

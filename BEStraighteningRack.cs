@@ -14,7 +14,7 @@ using static System.Net.Mime.MediaTypeNames;
 namespace StoneRoad
 {
 
-	public class BEStraighteningRack : BlockEntityDisplayCase
+	public class BEStraighteningRack : BlockEntityDisplayCase, ITexPositionSource
 	{
 		static SimpleParticleProperties breakSparks;
 		static SimpleParticleProperties smallMetalSparks;
@@ -33,10 +33,13 @@ namespace StoneRoad
 		//private readonly long particleTick;
 
 		private BlockFacing ownFacing;
+
 		private double burningUntilTotalDays;
 		private double burningStartTotalDays;
-		public override string InventoryClassName => "straightenrack";
+
+		protected InventoryGeneric inventory;
 		public override InventoryBase Inventory => this.inventory;
+		public override string InventoryClassName => "straightenrack";
 		private int FirstFreeSlot => GetFirstFreeSlot();
 
 		private AssetLocation logSound;
@@ -101,7 +104,7 @@ namespace StoneRoad
 		public BEStraighteningRack()
 		{
 			inventory = new InventoryGeneric(maxSlots, null, null);
-			meshes = new MeshData[maxSlots];
+			//meshes = new MeshData[maxSlots];
 			State = StraightenRackStates.Starting;
 		}
 

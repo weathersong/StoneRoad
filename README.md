@@ -1,15 +1,14 @@
 # StoneRoad
-This mod slows down the progression to copper age, plus adds a few interesting new ways to perform routine tasks. It currently depends, implicitly, on the mod Ancient Tools, for the adze and mortar+pestle.
-
-Stone Road is sort of a stand-in until In Dappled Groves is fully released.
+This mod slows down the progression to copper age, plus adds a few interesting new ways to perform routine tasks.
 
 Roughly, here are the changes and the progression path to copper age:
 
 ***
 
 * **Wood is no longer chopped in the grid to produce firewood.**
-Instead, make a chopping block, using an axe and knife and log. Set it down, then "load" it by holding a log in hands and right-clicking. Now switch to either an axe, or an adze, and *right-click* to either chop or hew the log. This produces firewood, bark, and *lumber*.
-You may also further chop firewood into sticks, as a convenience. Note that there is no longer a recipe to saw logs into planks, so this is the only path toward producing them.
+Instead, make a chopping block, using an axe and knife and log. Set it down, then load it by holding a log in hands and right-clicking. With an axe, *right-click* to chop the log, or hold sneak and right-click to debark the log.
+Depending on which is used, this produces firewood, bark, and *lumber* You may also further chop firewood into sticks, as a convenience.
+There is no longer a recipe to saw logs into planks, so this is the only path toward producing them.
 
 * **Firewood and lumber must be aged.**
 Create a drying rack using a few pieces of raw lumber made from the chopping block. Load it up with either firewood or raw lumber or both. It then takes some time to dry (cure), which is configurable.
@@ -38,13 +37,14 @@ The cook time for charcoal now defaults to 60 hours, though this can be configur
 ## Additional Features
 These are some general quality-of-life features to make living without copper somewhat more bearable.
 
-* **Fruit can be juiced by hand.** This feature is experimental. It's a patch to all fruit (and, even more experimentally, all WildCraft fruit) allowing them to work like honeycombs:
+* **Fruit can be juiced by hand.** This feature is experimental. It's a patch to all fruit (and, even more experimentally, all Wildcraft fruit) allowing them to work like honeycombs:
 Place a container (a bowl, or a bucket if you've made it that far) on the ground, hold sneak, and hold left mouse. Not much juice is produced so that the fruit press remains desirable later. No mash is produced.
 This doesn't work with all fruits mainly because the logic is very simple and can't account for special cases like (pine)apples. But it should enable stone age syrup and even wine!
 
 ***
 
 ## Final Notes
-This mod isn't generally intended for public use, but is public here to act as a useful example of several types of systems. It has only had light testing in-game, and only on version 1.17.11.
+This mod isn't generally designed for public use, but is public here to act as a useful example of several types of systems. It has had a fair amount of testing in-game, but may still be buggy.
+Stone Road is currently *only* compatible with game version 1.18, which adds debarked logs. (Previous versions here on Git depended on Ancient Tools, which had its own stripped logs.)
 
 Some of the code is also adapted from Primitive Survival (or the game's own files), but has been pretty extensively modified to suit the mod's own function.
