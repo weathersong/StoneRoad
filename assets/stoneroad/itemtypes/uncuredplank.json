@@ -1,0 +1,191 @@
+{
+  "code": "uncuredplank",
+  "class": "ItemPlank",
+  "variantgroups": [
+    {
+      "code": "stage",
+      "states": [ "raw", "warped" ]
+    },
+    {
+      "code": "wood",
+      "states": [ "aged" ],
+      "loadFromProperties": "block/wood"
+    }
+  ],
+
+  "behaviors": [
+    {
+      "name": "GroundStorable",
+      "properties": {
+        "layout": "Stacking",
+        "placeRemoveSound": "game:sounds/block/planks",
+        "stackingModel": "game:block/wood/plankpile",
+        "stackingTextures": {
+          "wood": "game:block/wood/planks/{wood}1"
+        },
+        "tessQuantityElements": 1,
+        "stackingCapacity": 48,
+        "collisionBox": {
+          "x1": 0,
+          "y1": 0,
+          "z1": 0,
+          "x2": 1,
+          "y2": 0.0625,
+          "z2": 1
+        },
+        "cbScaleYByLayer": 0.33333333333333333333333333333333,
+        "transferQuantity": 1,
+        "bulkTransferQuantity": 4
+      }
+    }
+  ],
+  "creativeinventory": {
+    "general": [ "*" ],
+    "items": [ "*" ]
+  },
+  "attributesByType": {
+    "*-raw-*": {
+      "handbook": {
+        "groupBy": [ "uncuredplank-raw-*" ]
+      }
+    },
+    "*-warped-*": {
+      "handbook": {
+        "groupBy": [ "uncuredplank-warped-*" ]
+      }
+    }
+  },
+
+  "shape": { "base": "item/plank" },
+  "textures": {
+    "wood": { "base": "game:block/wood/planks/{wood}1" }
+  },
+  "drawtype": "json",
+
+  "resistance": 0.1,
+  "sounds": {
+    "hit": "game:block/planks",
+    "break": "game:block/planks",
+    "place": "game:block/planks",
+    "walk": "game:walk/wood"
+  },
+  "combustiblePropsByType": {
+    "*-raw-*": {
+      "meltingPoint": 300,
+      "meltingDuration": 23,
+      "smeltedRatio": 1,
+      "smeltingType": "convert",
+      "smeltedStack": {
+        "type": "item",
+        "code": "charcoal-poor"
+      },
+      "requiresContainer": false
+    },
+    //"*-warped-*": {
+    //  "meltingPoint": 300,
+    //  "meltingDuration": 14,
+    //  "smeltedRatio": 1,
+    //  "smeltingType": "convert",
+    //  "smeltedStack": {
+    //    "type": "block",
+    //    "code": "uncuredplank-cured-{wood}"
+    //  },
+    //  "requiresContainer": false
+    //},
+    "*-warped-*": {
+      "burnTemperature": 600,
+      "burnDuration": 5
+    }
+  },
+  "materialDensity": 600,
+
+  "maxstacksize": 16,
+
+  "sidesolid": { "all": false },
+  "sideopaque": { "all": false },
+  "lightAbsorption": 0,
+  "collisionSelectionBoxesByType": {
+    "*": [
+      {
+        "x1": 0,
+        "y1": 0,
+        "z1": 0.33,
+        "x2": 1,
+        "y2": 0.1,
+        "z2": 0.66
+      }
+    ]
+  },
+  "guiTransform": {
+    "translation": {
+      "x": 0,
+      "y": 2,
+      "z": 0
+    },
+    "rotation": {
+      "x": 0,
+      "y": -45,
+      "z": 35
+    },
+    "origin": {
+      "x": 0.5,
+      "y": 0,
+      "z": 0.5
+    },
+    "scale": 1.86
+  },
+  "fpHandTransform": {
+    "translation": {
+      "x": 0,
+      "y": 0,
+      "z": 0
+    },
+    "rotation": {
+      "x": 3,
+      "y": -33,
+      "z": -25
+    },
+    "origin": {
+      "x": 0.5,
+      "y": 0.1,
+      "z": 0.5
+    },
+    "scale": 1.98
+  },
+  "tpHandTransform": {
+    "translation": {
+      "x": -0.6,
+      "y": -0.06,
+      "z": -0.44
+    },
+    "rotation": {
+      "x": 109,
+      "y": 51,
+      "z": 1
+    },
+    "origin": {
+      "x": 0.5,
+      "y": 0.1,
+      "z": 0.5
+    },
+    "scale": 0.86
+  },
+  "groundTransform": {
+    "translation": {
+      "x": 0,
+      "y": 0,
+      "z": 0
+    },
+    "rotation": {
+      "x": 0,
+      "y": 0,
+      "z": 0
+    },
+    "origin": {
+      "x": 0.5,
+      "y": 0,
+      "z": 0.5
+    },
+    "scale": 3.25
+  }
+}

@@ -1,0 +1,20 @@
+[
+  {
+    "op": "add",
+    "path": "/textures/charcoal-poor",
+    "value": { "base": "stoneroad:charcoal-poor" },
+    "file": "game:blocktypes/coalpile.json"
+  },
+  {
+    "op": "add",
+    "path": "/textures/charcoal-fine",
+    "value": { "base": "stoneroad:charcoal-fine" },
+    "file": "game:blocktypes/coalpile.json"
+  },
+  {
+    "op": "add",
+    "path": "/textures/charcoal-superior",
+    "value": { "base": "stoneroad:charcoal-superior" },
+    "file": "game:blocktypes/coalpile.json"
+  }
+]

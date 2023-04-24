@@ -14,7 +14,7 @@ namespace StoneRoad
 	public class StoneRoadMod : ModSystem
 	{
 
-		const string LogHeader = "STONE_ROAD_1_0";
+		const string LogHeader = "STONE_ROAD_1_1";
 		const string ConfigFilename = "StoneRoadConfig.json";
 
 		private ICoreAPI CoreApi;

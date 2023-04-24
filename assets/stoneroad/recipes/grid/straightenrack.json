@@ -1,0 +1,22 @@
+{
+  "ingredientPattern": "___,_S_,B_B",
+  "ingredients": {
+    "S": {
+      "type": "block",
+      "code": "straightenrackshelfblock-burned"
+    },
+    "B": {
+      "type": "item",
+      "code": "game:stone-*",
+      "quantity": 4
+    }
+  },
+  "width": 3,
+  "height": 3,
+  "shapeless": false,
+  "output": {
+    "type": "block",
+    "code": "stoneroad:straightenrack-north",
+    "quantity": 1
+  }
+}

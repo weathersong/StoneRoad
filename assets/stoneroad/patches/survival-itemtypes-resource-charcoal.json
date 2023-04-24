@@ -1,0 +1,14 @@
+[
+  {
+    "op": "replace",
+    "path": "/combustibleProps/burnTemperature",
+    "value": 900,
+    "file": "game:itemtypes/resource/charcoal.json"
+  },
+  {
+    "op": "replace",
+    "path": "/combustibleProps/burnDuration",
+    "value": 60,
+    "file": "game:itemtypes/resource/charcoal.json"
+  }
+]

@@ -1,0 +1,36 @@
+{
+	"code": "firewood-aged",
+	"class": "ItemFirewoodAged",
+	"maxstacksize": 32,
+	"attributes": {
+		"firepitConstructable": true,
+		"placeSound": "game:block/planks"
+	},
+	"shape": { "base": "game:item/firewood" },
+	"creativeinventory": { "general": ["*"], "items": ["*"] },
+	"guiTransform": {
+		"translation": { "x": 3, "y": 0, "z": 0 },
+		"rotation": { "x": -22.5, "y": -44.6875, "z": 0 },
+		"origin": { "x": 0.5, "y": 0.43, "z": 0.51 },
+		"scale": 1.45
+	},
+	"combustibleProps": {
+		"burnTemperature": 800,
+		"burnDuration": 60
+	},
+	"materialDensity": 700,
+	"fpHandTransform": {
+		"translation": { "x": 0.046875, "y": -0.34375, "z": 0 },
+		"rotation": { "x": 4, "y": 15, "z": 0 }
+	},
+	"groundTransform": {
+		"translation": { "x": 0, "y": 0, "z": 0 },
+		"rotation": { "x": 0, "y": 0, "z": 0 },
+		"origin": { "x": 0.5, "y": 0.37, "z": 0.5 },
+		"scale": 4
+	},
+	"tpHandTransform": {
+		"translation": { "x": -1.1, "y": -1, "z": -0.8 },
+		"scale": 0.5
+	}
+}

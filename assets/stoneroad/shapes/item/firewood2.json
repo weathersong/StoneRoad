@@ -1,0 +1,43 @@
+{
+	"editor": {
+		"allAngles": false,
+		"entityTextureMode": false
+	},
+	"textureWidth": 16,
+	"textureHeight": 16,
+	"textureSizes": {
+	},
+  "textures": {
+    "bark": "game:block/wood/firewood/bark",
+    "front": "game:block/wood/firewood/north",
+    "side": "game:block/wood/firewood/side"
+  },
+	"elements": [
+		{
+			"name": "Log1",
+			"from": [ 0.0, 0.0, 0.0 ],
+			"to": [ 4.0, 4.0, 16.0 ],
+			"faces": {
+				"north": { "texture": "#front", "uv": [ 0.0, 0.0, 4.0, 4.0 ] },
+				"east": { "texture": "#side", "uv": [ 0.0, 0.0, 16.0, 4.0 ], "autoUv": false },
+				"south": { "texture": "#front", "uv": [ 4.0, 4.0, 8.0, 8.0 ] },
+				"west": { "texture": "#bark", "uv": [ 0.0, 0.0, 16.0, 4.0 ], "autoUv": false },
+				"up": { "texture": "#bark", "uv": [ 0.0, 4.0, 16.0, 8.0 ], "rotation": 90, "autoUv": false },
+				"down": { "texture": "#side", "uv": [ 0.0, 8.0, 16.0, 4.0 ], "rotation": 90, "autoUv": false }
+			}
+		},
+		{
+			"name": "Log2",
+			"from": [ 0.0, 4.0, 0.0 ],
+			"to": [ 4.0, 8.0, 16.0 ],
+			"rotationOrigin": [ 0.0, 4.0, 0.0 ],
+			"faces": {
+				"north": { "texture": "#front", "uv": [ 0.0, 0.0, 4.0, 4.0 ] },
+				"east": { "texture": "#side", "uv": [ 0.0, 0.0, 16.0, 4.0 ], "autoUv": false },
+				"south": { "texture": "#front", "uv": [ 4.0, 4.0, 8.0, 8.0 ] },
+				"west": { "texture": "#bark", "uv": [ 0.0, 0.0, 16.0, 4.0 ], "autoUv": false },
+				"up": { "texture": "#bark", "uv": [ 0.0, 4.0, 16.0, 8.0 ], "rotation": 90, "autoUv": false },
+				"down": { "texture": "#side", "uv": [ 0.0, 8.0, 16.0, 4.0 ], "rotation": 90, "autoUv": false }
+			}
+		}
+	]}
