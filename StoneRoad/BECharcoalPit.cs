@@ -63,7 +63,7 @@ namespace StoneRoad
 
 		private void OnClientTick(float dt)
 		{
-			if (!lit) return;
+			if (!lit || Block?.ParticleProperties == null) return;
 
 			BlockPos pos = new BlockPos();
 			foreach (var val in smokeLocations)
@@ -96,7 +96,6 @@ namespace StoneRoad
 
 			if (state == 0) return;
 
-
 			BlockPos holePos = FindHoleInPit();
 
 			if (holePos != null)
@@ -104,7 +103,7 @@ namespace StoneRoad
 				finishedAfterTotalHours = Api.World.Calendar.TotalHours + BurnHours;
 
 				BlockPos tmpPos = new BlockPos();
-				BlockFacing firefacing = BlockFacing.UP;
+				BlockFacing firefacing = null;
 
 				Block block = Api.World.BlockAccessor.GetBlock(holePos);
 				if (block.BlockId != 0 && block.BlockId != Block.BlockId)
@@ -121,11 +120,13 @@ namespace StoneRoad
 					}
 				}
 
-				Block fireblock = Api.World.GetBlock(new AssetLocation("fire"));
-				Api.World.BlockAccessor.SetBlock(fireblock.BlockId, holePos);
-
-				BlockEntity befire = Api.World.BlockAccessor.GetBlockEntity(holePos);
-				befire?.GetBehavior<BEBehaviorBurning>()?.OnFirePlaced(firefacing, startedByPlayerUid);
+				if (firefacing != null)
+				{
+					Block fireblock = Api.World.GetBlock(new AssetLocation("fire"));
+					Api.World.BlockAccessor.SetBlock(fireblock.BlockId, holePos);
+					BlockEntity befire = Api.World.BlockAccessor.GetBlockEntity(holePos);
+					befire?.GetBehavior<BEBehaviorBurning>()?.OnFirePlaced(firefacing, startedByPlayerUid);
+				}
 
 				return;
 			}
@@ -160,8 +161,6 @@ namespace StoneRoad
 			bfsQueue.Enqueue(Pos);
 
 			int maxHalfSize = 6;
-			int firewoodBlockId = Api.World.GetBlock(new AssetLocation("firewoodpile")).BlockId;
-			int firewoodAgedBlockId = Api.World.GetBlock(new AssetLocation("stoneroad", "firewoodpile-aged")).BlockId;
 			int coalPileId = Api.World.GetBlock(new AssetLocation("coalpile")).BlockId;
 
 			Vec3i curQuantityAndYMinMax;
@@ -183,20 +182,14 @@ namespace StoneRoad
 					curQuantityAndYMinMax = quantityPerColumn[bposGround] = new Vec3i(0, bpos.Y, bpos.Y);
 				}
 
-				//BlockEntityFirewoodPile be = Api.World.BlockAccessor.GetBlockEntity(bpos) as BlockEntityFirewoodPile;
-				//if (be != null)
-				if (Api.World.BlockAccessor.GetBlockEntity(bpos) is BlockEntityFirewoodPile be)
-					curQuantityAndYMinMax.X += be.OwnStackSize;
-				else if (Api.World.BlockAccessor.GetBlockEntity(bpos) is BEFirewoodPileAged bea)
-					curQuantityAndYMinMax.X += bea.OwnStackSize;
+				curQuantityAndYMinMax.X += BlockFirepit.GetFireWoodQuanity(Api.World, bpos); // Quanity. nice. ;)
 
 				foreach (BlockFacing facing in BlockFacing.ALLFACES)
 				{
 					BlockPos npos = bpos.AddCopy(facing);
-					Block nBlock = Api.World.BlockAccessor.GetBlock(npos);
 
 					// Only traverse inside the firewood pile
-					if (nBlock.BlockId != firewoodBlockId && nBlock.BlockId != firewoodAgedBlockId)
+					if (!BlockFirepit.IsFirewoodPile(Api.World, npos))
 					{
 						IWorldChunk chunk = Api.World.BlockAccessor.GetChunkAtBlockPos(npos);
 						if (chunk == null) return; // Maybe at the endge of the loaded chunk, in which case return before changing any blocks and it can be converted next tick instead
@@ -224,15 +217,16 @@ namespace StoneRoad
 				int maxY = val.Value.Z;
 				while (lpos.Y <= maxY)
 				{
-					Block nBlock = Api.World.BlockAccessor.GetBlock(lpos);
-					if (nBlock.BlockId == firewoodBlockId || nBlock.BlockId == firewoodAgedBlockId)  //test for the possibility someone had contiguous firewood both above and below a soil block for example
+					if (BlockFirepit.IsFirewoodPile(Api.World, lpos))  //test for the possibility someone had contiguous firewood both above and below a soil block for example
 					{
 						if (charCoalQuantity > 0)
 						{
 							// the default drop is poor
-							Block charcoalBlock = charcoalBlock = Api.World.GetBlock( new AssetLocation("stoneroad", "charcoalpilepoor-" + GameMath.Clamp(charCoalQuantity, 1, 8)) );
+							Block charcoalBlock = Api.World.GetBlock( new AssetLocation("stoneroad", "charcoalpilepoor-" + GameMath.Clamp(charCoalQuantity, 1, 8)) );
 							// regardless of bedding quality, unaged firewood can only ever produce poor charcoal
-							if (nBlock.BlockId == firewoodAgedBlockId)
+							BlockEntityGroundStorage beg = Api.World.BlockAccessor.GetBlockEntity<BlockEntityGroundStorage>(lpos);
+							bool isAged = beg?.Inventory[0]?.Itemstack.Collectible.Code.Path == "agedfirewood";
+							if (isAged)
 							{
 								BlockPos bedPos = new BlockPos();
 								bedPos.Set(lpos.X, lpos.Y - 1, lpos.Z);
@@ -249,10 +243,10 @@ namespace StoneRoad
 											charcoalBlock = Api.World.GetBlock(new AssetLocation("charcoalpile-" + GameMath.Clamp(charCoalQuantity, 1, 8)));
 										// standard/vanilla bedding = fine quality
 										else if (coalItemPath == "charcoal")
-											charcoalBlock = Api.World.GetBlock(new AssetLocation("stoneroad", "charcoalpilefine-" + GameMath.Clamp(charCoalQuantity, 1, 8)));
+											charcoalBlock = Api.World.GetBlock(new AssetLocation("stoneroad", "charcoalpile-fine-" + GameMath.Clamp(charCoalQuantity, 1, 8)));
 										// fine / superior bedding = superior quality
 										else if (coalItemPath == "charcoal-fine" || coalItemPath == "charcoal-superior")
-											charcoalBlock = Api.World.GetBlock(new AssetLocation("stoneroad", "charcoalpilesuperior-" + GameMath.Clamp(charCoalQuantity, 1, 8)));
+											charcoalBlock = Api.World.GetBlock(new AssetLocation("stoneroad", "charcoalpile-superior-" + GameMath.Clamp(charCoalQuantity, 1, 8)));
 									}
 								}
 							}
@@ -290,8 +284,8 @@ namespace StoneRoad
 
 			//int charcoalPitBlockId = Api.World.GetBlock(new AssetLocation("charcoalpit")).BlockId;
 			int charcoalPitBlockId = Api.World.GetBlock(new AssetLocation("stoneroad", "charcoalpit")).BlockId;
-			int firewoodBlockId = Api.World.GetBlock(new AssetLocation("firewoodpile")).BlockId;
-			int firewoodAgedBlockId = Api.World.GetBlock(new AssetLocation("stoneroad", "firewoodpile-aged")).BlockId;
+			//int firewoodBlockId = Api.World.GetBlock(new AssetLocation("firewoodpile")).BlockId;
+			//int firewoodAgedBlockId = Api.World.GetBlock(new AssetLocation("stoneroad", "firewoodpile-aged")).BlockId;
 			int coalPileId = Api.World.GetBlock(new AssetLocation("coalpile")).BlockId;
 
 			int maxHalfSize = 6;
@@ -315,10 +309,14 @@ namespace StoneRoad
 					Block nBlock = chunk.GetLocalBlockAtBlockPos(Api.World, npos);
 
 					bool solid = nBlock.SideSolid[facing.Opposite.Index] || (nBlock is BlockMicroBlock && (chunk.GetLocalBlockEntityAtBlockPos(npos) as BlockEntityMicroBlock).sideAlmostSolid[facing.Opposite.Index]);
+					bool isFirewoodpile = BlockFirepit.IsFirewoodPile(Api.World, npos);
 
 					if (
-						!solid && nBlock.BlockId != charcoalPitBlockId &&
-						nBlock.BlockId != firewoodBlockId && nBlock.BlockId != firewoodAgedBlockId &&
+						!solid &&
+						!isFirewoodpile &&
+						//nBlock.BlockId != firewoodBlockId &&
+						//nBlock.BlockId != firewoodAgedBlockId &&
+						nBlock.BlockId != charcoalPitBlockId &&
 						nBlock.BlockId != coalPileId
 					)
 					{
@@ -327,7 +325,7 @@ namespace StoneRoad
 					}
 
 					// Only traverse inside the firewood pile
-					if (nBlock.BlockId != firewoodBlockId) continue;
+					if (!isFirewoodpile) continue;
 
 					// Only traverse within a 12x12x12 block cube
 					bool inCube = Math.Abs(npos.X - Pos.X) <= maxHalfSize && Math.Abs(npos.Y - Pos.Y) <= maxHalfSize && Math.Abs(npos.Z - Pos.Z) <= maxHalfSize;

@@ -22,7 +22,7 @@ namespace StoneRoad
 
 			if (stage == 5) return false;
 
-			if (stage == 4 && world.BlockAccessor.GetBlock(pos.DownCopy()).Code.Path.Contains("firewoodpile"))
+			if (stage == 4 && IsFirewoodPile(world, pos.DownCopy()))
 			{
 				Block charcoalPitBlock = world.GetBlock(new AssetLocation("stoneroad", "charcoalpit"));
 				if (charcoalPitBlock != null)
@@ -40,6 +40,12 @@ namespace StoneRoad
 			}
 
 			return true;
+		}
+
+		private static bool IsFirewoodPile(IWorldAccessor world, BlockPos pos)
+		{
+			var beg = world.BlockAccessor.GetBlockEntity<BlockEntityGroundStorage>(pos);
+			return beg != null && beg.Inventory[0]?.Itemstack.Collectible is ItemFirewood; // this includes (vanilla) firewood-aged
 		}
 	}
 

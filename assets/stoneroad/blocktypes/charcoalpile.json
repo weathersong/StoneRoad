@@ -1,12 +1,19 @@
 {
-  "code": "charcoalpilesuperior",
+  "code": "charcoalpile",
   "class": "BlockCharcoalPile",
   "variantgroups": [
+    {
+      "code": "quality",
+      "states": [ "poor", "fine", "superior" ]
+    },
     {
       "code": "amount",
       "states": [ "1", "2", "3", "4", "5", "6", "7", "8" ]
     }
   ],
+  "attributes": {
+    "layerGroupCode": "amount"
+  },
   "creativeinventory": {
     "general": [ "" ],
     "decorative": [ "" ]
@@ -97,12 +104,26 @@
       "*-8": 1
     }
   },
-  "drops": [
-    {
-      "type": "item",
-      "code": "charcoal-superior"
-    }
-  ],
+  "dropsByType": {
+    "*-poor-*": [
+      {
+        "type": "item",
+        "code": "charcoal-poor"
+      }
+    ],
+    "*-fine-*": [
+      {
+        "type": "item",
+        "code": "charcoal-fine"
+      }
+    ],
+    "*-superior-*": [
+      {
+        "type": "item",
+        "code": "charcoal-superior"
+      }
+    ]
+  },
   "materialDensity": 600,
   "sounds": {
     "place": "game:block/charcoal",

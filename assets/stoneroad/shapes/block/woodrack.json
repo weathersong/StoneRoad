@@ -12,7 +12,10 @@
     "firewoodside": "game:block/wood/firewood/side",
     "bark": "game:block/wood/firewood/bark",
     "oak": "game:block/wood/oak",
-    "wood": "game:block/wood/planks/oak1"
+    "wood": "game:block/wood/planks/oak1",
+    "agedfirewoodfront": "game:block/wood/firewood/aged/south",
+    "agedfirewoodside": "game:block/wood/firewood/aged/side",
+    "agedbark": "game:block/wood/firewood/aged/bark"
   },
 	"elements": [
 		{

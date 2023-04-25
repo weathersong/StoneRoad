@@ -1,0 +1,91 @@
+{
+	"editor": {
+		"allAngles": false,
+		"entityTextureMode": false
+	},
+	"textureWidth": 16,
+	"textureHeight": 16,
+	"textureSizes": {
+	},
+  "textures": {
+    "agedfirewoodfront": "game:block/wood/firewood/aged/south",
+    "agedfirewoodside": "game:block/wood/firewood/aged/side",
+    "agedbark": "game:block/wood/firewood/aged/bark"
+  },
+	"elements": [
+		{
+			"name": "Log1",
+			"from": [ 0.0, 0.0, 0.0 ],
+			"to": [ 4.0, 4.0, 16.0 ],
+			"faces": {
+        "north": {
+          "texture": "#agedfirewoodfront",
+          "uv": [ 0.0, 0.0, 4.0, 4.0 ]
+        },
+        "east": {
+          "texture": "#agedfirewoodside",
+          "uv": [ 0.0, 0.0, 16.0, 4.0 ],
+          "autoUv": false
+        },
+        "south": {
+          "texture": "#agedfirewoodfront",
+          "uv": [ 4.0, 4.0, 8.0, 8.0 ]
+        },
+        "west": {
+          "texture": "#agedbark",
+          "uv": [ 0.0, 0.0, 16.0, 4.0 ],
+          "autoUv": false
+        },
+        "up": {
+          "texture": "#agedbark",
+          "uv": [ 0.0, 4.0, 16.0, 8.0 ],
+          "rotation": 90,
+          "autoUv": false
+        },
+        "down": {
+          "texture": "#agedfirewoodside",
+          "uv": [ 0.0, 8.0, 16.0, 4.0 ],
+          "rotation": 90,
+          "autoUv": false
+        }
+			}
+		},
+		{
+			"name": "Log2",
+			"from": [ 0.0, 4.0, 0.0 ],
+			"to": [ 4.0, 8.0, 16.0 ],
+			"rotationOrigin": [ 0.0, 4.0, 0.0 ],
+			"faces": {
+        "north": {
+          "texture": "#agedfirewoodfront",
+          "uv": [ 0.0, 0.0, 4.0, 4.0 ]
+        },
+        "east": {
+          "texture": "#agedfirewoodside",
+          "uv": [ 0.0, 0.0, 16.0, 4.0 ],
+          "autoUv": false
+        },
+        "south": {
+          "texture": "#agedfirewoodfront",
+          "uv": [ 4.0, 4.0, 8.0, 8.0 ]
+        },
+        "west": {
+          "texture": "#agedbark",
+          "uv": [ 0.0, 0.0, 16.0, 4.0 ],
+          "autoUv": false
+        },
+        "up": {
+          "texture": "#agedbark",
+          "uv": [ 0.0, 4.0, 16.0, 8.0 ],
+          "rotation": 90,
+          "autoUv": false
+        },
+        "down": {
+          "texture": "#agedfirewoodside",
+          "uv": [ 0.0, 8.0, 16.0, 4.0 ],
+          "rotation": 90,
+          "autoUv": false
+        }
+			}
+		}
+	]}

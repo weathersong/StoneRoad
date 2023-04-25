@@ -87,7 +87,10 @@ namespace StoneRoad
 				// firewood
 				if (stackPath == "firewood")
 				{
-					inventory[i].Itemstack = new ItemStack(Api.World.GetItem(new AssetLocation("stoneroad", "firewood-aged")), 2);
+					// 1.18: Use the vanilla aged firewood.
+					// This isn't just for convenience, but code even as deep as ItemDryGrass refers to ItemFirewood (which is the same class for aged) for firepit / charcoal pit construction...
+					//inventory[i].Itemstack = new ItemStack(Api.World.GetItem(new AssetLocation("stoneroad", "firewood-aged")), 2);
+					inventory[i].Itemstack = new ItemStack(Api.World.GetItem(new AssetLocation("agedfirewood")), 2);
 				}
 				// raw lumber
 				else if (stackPath.StartsWith("uncuredplank-raw-"))
@@ -339,8 +342,10 @@ namespace StoneRoad
 						if (!inventory[i].Empty)
 						{
 							string shapePath = inventory[i].Itemstack.Collectible.Code.Path;
-							if (shapePath.StartsWith("firewood"))
+							if (shapePath == "firewood")
 								mesh = GetItemMesh("stoneroad:shapes/item/firewood2", texture, i);
+							else if (shapePath == "agedfirewood")
+								mesh = GetItemMesh("stoneroad:shapes/item/agedfirewood2", texture, i);
 							else
 							{
 								// planks-as-items are a bit tricky because of the wood variant, so there's a "fake" version that looks the same, but is a block

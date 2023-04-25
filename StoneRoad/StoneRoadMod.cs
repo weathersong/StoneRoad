@@ -55,9 +55,7 @@ namespace StoneRoad
 			api.RegisterBlockEntityClass("BEWoodRack", typeof(BEWoodRack));
 
 			// Aged firewood
-			api.RegisterItemClass("ItemFirewoodAged", typeof(ItemFirewoodAged));
-			api.RegisterBlockClass("BlockFirewoodPileAged", typeof(BlockFirewoodPileAged));
-			api.RegisterBlockEntityClass("BEFirewoodPileAged", typeof(BEFirewoodPileAged));
+			// Removed in 1.18 - use the vanilla version now instead.
 
 			// Straightening rack
 			api.RegisterBlockClass("BlockStraighteningRack", typeof(BlockStraighteningRack));
