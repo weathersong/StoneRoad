@@ -11,7 +11,8 @@ Depending on which is used, this produces firewood, bark, and *lumber* You may a
 There is no longer a recipe to saw logs into planks, so this is the only path toward producing them.
 
 * **Firewood and lumber must be aged.**
-Create a drying rack using a few pieces of raw lumber made from the chopping block. Load it up with either firewood or raw lumber or both. It then takes some time to dry (cure), which is configurable.
+Create a drying rack using a few pieces of raw lumber made from the chopping block. Load it up with either firewood or raw lumber or both. It then takes some time to dry (cure), which is configurable. Note that if you find aged firewood in ruins,
+this does work the same.
 
 * **Lumber can convert into boards.**
 The drying rack will usually produce warped lumber (the conversion chance is configurable), so a straightening rack must be built, loaded with warped lumber, fueled with (either) firewood, and fired for about a day (configurable), for a chance (configurable)
@@ -21,15 +22,15 @@ to convert the warped lumber into regular, vanilla boards. This completely circu
 No longer just clay-formed and fired, you must first shape the raw clay form (using *only* fire clay), then treat it in a limewater solution, in a barrel.
 The treated clay form is then dried, and must then be loaded with *superior* charcoal before it can finally be fired.
 (This series of steps is meant to represent the sum total of the mod's changes, hence the barrel and the superior charcoal. But also locating the uncommon elements of fire clay and limestone in the world.)
-However...
+And speaking of charcoal...
 
 * **Firewood and charcoal don't burn as hot.**
-The most important consequence is that smelting won't be possible with vanilla charcoal. There are now 4 different qualities of charcoal: Poor, regular (the vanilla charcoal), fine, and superior.
+The most important change in the mod is that smelting isn't possible with vanilla charcoal. There are now 4 different qualities of charcoal: Poor, regular (the vanilla charcoal), fine, and superior.
 Only superior charcoal can reach 1100C, necessary to melt copper and its alloys.
 Charcoal pits work roughly the same, and making a vanilla-style pit still works, but only produces poor charcoal. (Poor charcoal can also be produced right at a firepit using raw lumber. This is a handy substitute for firewood itself, in cooking.)
 To produce higher quality charcoal, a bed of charcoal must be laid down, and *aged* firewood placed atop it.
 The rule here is that one higher tier of charcoal is produced than the bed, so a block of poor charcoal under a block of aged firewood converts the firewood into regular quality charcoal.
-Dig out that charcoal and the poor charcoal (unconverted) beneath it, and lay down the regular charcoal as the bed. Place aged firewood atop it, and cook again. This time, fine charcoal is the result. And then once more for superior.
+Dig out that charcoal pile and the poor charcoal (unconverted) beneath it, and lay down the regular charcoal as the bed. Place aged firewood atop it, and cook again. This time, fine charcoal is the result. And then once more for superior.
 The cook time for charcoal now defaults to 60 hours, though this can be configured. Keep this duration (*times the number of upgrade steps, plus aging more firewood each time*) in mind when planning your initial settlement!
 
 ***
@@ -40,6 +41,8 @@ These are some general quality-of-life features to make living without copper so
 * **Fruit can be juiced by hand.** This feature is experimental. It's a patch to all fruit (and, even more experimentally, all Wildcraft fruit) allowing them to work like honeycombs:
 Place a container (a bowl, or a bucket if you've made it that far) on the ground, hold sneak, and hold left mouse. Not much juice is produced so that the fruit press remains desirable later. No mash is produced.
 This doesn't work with all fruits mainly because the logic is very simple and can't account for special cases like (pine)apples. But it should enable stone age syrup and even wine!
+
+* **Tannin from oak bark.** Interesting to note, 1.18 added oak bark, but it's currently unobtainable. So I've added it as a product of debarking oak, and a recipe to use that bark (instead of the whole log) to make tannin.
 
 ***
 
