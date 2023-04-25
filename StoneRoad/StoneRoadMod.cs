@@ -66,8 +66,6 @@ namespace StoneRoad
 			// // Firepit itself is Harmony patched (FirepitPatch.cs) to spawn *this* block, not the vanilla BlockCharcoalPit, which this is based upon:
 			api.RegisterBlockClass("BlockCharcoalPit", typeof(BlockCharcoalPit));
 			api.RegisterBlockEntityClass("BECharcoalPit", typeof(BECharcoalPit));
-			// // BlockCharcoalPile is the pile, introduced so that stoneroad's charcoalpile.json can have a quality variant
-			//api.RegisterBlockClass("BlockSRCharcoalPile", typeof(BlockCharcoalPile)); // not viable in 1.17 due to some hard-coded assumptions about the CodePath in BlockLayeredSlowDig itself
 
 			// Hand-juiced fruit
 			api.RegisterItemClass("ItemJuicyFruit", typeof(ItemJuicyFruit));
@@ -84,7 +82,6 @@ namespace StoneRoad
 
 			ServerApi = api;
 
-			//ServerApi.RegisterCommand("flextrans", "Flexible Translocator mod utility command.", "[setmin #|setmax #]", Cmd_FlexTrans);
 		}
 
 		public override void StartClientSide(ICoreClientAPI api)
@@ -92,6 +89,7 @@ namespace StoneRoad
 			base.StartClientSide(api);
 
 			ClientApi = api;
+
 		}
 
 		#endregion

@@ -61,7 +61,7 @@
   "blockdesc-warpedplank-next-step": "Hasn't cured properly, needs more time steaming.",
 
   "blockdesc-choppingblock-empty": "Add a log by right-clicking with the log in hand.",
-  "blockdesc-choppingblock-log": "Right-click with an axe to chop. Right-click with an adze to hew.",
+  "blockdesc-choppingblock-log": "Right-click with an axe to chop. Hold sneak, or use an adze, to hew.",
 
   "block-woodrack-*": "Wood drying rack",
   "blockdesc-woodrack-*": "Load up with firewood and/or raw lumber to begin drying.",

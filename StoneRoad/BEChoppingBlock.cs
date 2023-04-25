@@ -129,7 +129,8 @@ namespace StoneRoad
 				blockHalfLogToChop.SpawnBlockBrokenParticles(blockSel.Position);
 				Api.World.PlaySoundAt(logSound, blockSel.Position.X, blockSel.Position.Y, blockSel.Position.Z, byPlayer);
 				ToggleContentState();
-				Item dropItem = Api.World.GetItem(new AssetLocation("firewood"));
+				// This is a special shortcut. Maybe it's a little too convenient? Depends on whether your world is full of ruins (like with BetterRuins) or not.
+				Item dropItem = Api.World.GetItem(new AssetLocation( blockPath.StartsWith("loghalf-aged-") ? "agedfirewood" : "firewood" ));
 				if (dropItem != null)
 					for (int i = 0; i < 2; i++)
 						Api.World.SpawnItemEntity(new ItemStack(dropItem), this.Pos.ToVec3d().Add(0.5, 1.0 + (i / 10), 0.5));
