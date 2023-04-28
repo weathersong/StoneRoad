@@ -75,7 +75,11 @@ namespace StoneRoad
 
 		public override void OnHeldInteractStart(ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel, bool firstEvent, ref EnumHandHandling handling)
 		{
-			if (blockSel == null || !byEntity.Controls.ShiftKey) return;
+			if (blockSel == null || !byEntity.Controls.ShiftKey)
+			{
+				base.OnHeldInteractStart(slot, byEntity, blockSel, entitySel, firstEvent, ref handling);
+				return;
+			}
 
 			Block block = byEntity.World.BlockAccessor.GetBlock(blockSel.Position);
 
@@ -91,7 +95,7 @@ namespace StoneRoad
 
 		public override bool OnHeldInteractStep(float secondsUsed, ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel)
 		{
-			if (blockSel == null || !byEntity.Controls.ShiftKey) return false;
+			if (blockSel == null || !byEntity.Controls.ShiftKey) return base.OnHeldInteractStep(secondsUsed, slot, byEntity, blockSel, entitySel);
 
 			if (byEntity.World is IClientWorldAccessor)
 			{
@@ -114,7 +118,11 @@ namespace StoneRoad
 
 		public override void OnHeldInteractStop(float secondsUsed, ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel)
 		{
-			if (blockSel == null) return;
+			if (blockSel == null || !byEntity.Controls.ShiftKey)
+			{
+				base.OnHeldInteractStop(secondsUsed, slot, byEntity, blockSel, entitySel);
+				return;
+			}
 			if (secondsUsed < 1.9f) return;
 
 			IWorldAccessor world = byEntity.World;

@@ -364,5 +364,4 @@ FodyWeavers.xsd
 
 
 # StoneRoad specific exclusions
-postbuild.cmd
 /postbuild.cmd
