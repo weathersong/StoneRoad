@@ -148,15 +148,13 @@ namespace StoneRoad
 			ItemStack juiceStack = new ItemStack(juiceItem, 99999);
 			if (juiceStack == null) return;
 
-			BlockLiquidContainerTopOpened blockCnt = block as BlockLiquidContainerTopOpened;
-			if (blockCnt != null)
+			if (block is BlockLiquidContainerTopOpened blockCnt)
 			{
 				if (blockCnt.TryPutLiquid(blockSel.Position, juiceStack, ContainedJuiceLitres) == 0) return;
 			}
 			else
 			{
-				var beg = api.World.BlockAccessor.GetBlockEntity(blockSel.Position) as BlockEntityGroundStorage;
-				if (beg != null)
+				if (api.World.BlockAccessor.GetBlockEntity(blockSel.Position) is BlockEntityGroundStorage beg)
 				{
 					ItemSlot squeezeIntoSlot = beg.Inventory.FirstOrDefault(gslot => gslot.Itemstack?.Block != null && CanSqueezeInto(gslot.Itemstack.Block, null));
 					if (squeezeIntoSlot != null)

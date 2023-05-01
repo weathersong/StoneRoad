@@ -42,6 +42,12 @@ These are some general quality-of-life features to make living without copper so
 Place a container (a bowl, or a bucket if you've made it that far) on the ground, hold sneak, and hold left mouse. Not much juice is produced so that the fruit press remains desirable later. No mash is produced.
 This doesn't work with all fruits mainly because the logic is very simple and can't account for special cases like (pine)apples. But it should enable stone age syrup and even wine!
 
+* **Wood bowls.** First carve a pan (the one used for panning) then carve it again, to yield a bowl. This is an alternative to the typical clay bowl and is functionally identical. It serves a few important purposes:
+First, it's immediately and always available, so if you have no nearby clay source - a real problem on icy starts - you'll have at least some limited means of gathering liquids.
+This is crucial with Ancient Tools where pine bark can be made into dough and bread, as an emergency ration in areas where there is no food whatsoever, only pine trees and freshwater.
+This also works in conjunction with fruit juicing, which is again useful on icy starts since certain (Wildcraft) native berries are poisonous (unless juiced).
+And finally, it's something you don't necessarily need to carry with you, and could be crafted / disposed on the go during long overland (or overwater) expeditions; you only need to pack a pot.
+
 * **Tannin from oak bark.** Interesting to note, 1.18 added oak bark, but it's currently unobtainable. So I've added it as a product of debarking oak, and a recipe to use that bark (instead of the whole log) to make tannin.
 
 ***
