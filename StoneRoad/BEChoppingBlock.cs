@@ -35,10 +35,11 @@ namespace StoneRoad
 		{
 			base.Initialize(api);
 
-			this.inventory.LateInitialize("choppingblock" + "-" + Pos.X + "/" + Pos.Y + "/" + Pos.Z, api);
-			this.logSound = new AssetLocation("game", "sounds/block/planks");
+			inventory.LateInitialize("choppingblock" + "-" + Pos.X + "/" + Pos.Y + "/" + Pos.Z, api);
+			logSound = new AssetLocation("game", "sounds/block/planks");
 
-			this.ownFacing = BlockFacing.FromCode(api.World.BlockAccessor.GetBlock(this.Pos).LastCodePart());
+			ownFacing = BlockFacing.FromCode(api.World.BlockAccessor.GetBlock(this.Pos).LastCodePart());
+
 		}
 
 		internal bool OnInteract(IPlayer byPlayer, BlockSelection blockSel)
@@ -56,6 +57,16 @@ namespace StoneRoad
 				blockPath = itemStack.Collectible.Code.Path;
 
 			bool sneak = byPlayer.Entity.Controls.Sneak;
+
+			int chopCost = 4;
+			int stripCost = 4;
+			int firewoodCost = 2;
+			if (Block is BlockChoppingBlock block)
+			{
+				chopCost = block.AxeChopLogCost;
+				stripCost = block.AxeStripLogCost;
+				firewoodCost = block.AxeSplitFirewoodCost;
+			}
 
 			// Place down a log for chopping
 			if (playerPath.StartsWith("log-") && IsInventoryEmpty)
@@ -105,7 +116,7 @@ namespace StoneRoad
 				//string wood = blockToChop.Attributes["wood"].ToString(); // Code.Path = log-placed-larch-ud
 				string wood = blockLogToChop.Variant["wood"];
 				// damage axe
-				playerStack.Collectible.DamageItem(Api.World, byPlayer.Entity, playerSlot, 5);
+				playerStack.Collectible.DamageItem(Api.World, byPlayer.Entity, playerSlot, chopCost);
 				// particles
 				blockLogToChop.SpawnBlockBrokenParticles(blockSel.Position);
 				// sound
@@ -125,7 +136,7 @@ namespace StoneRoad
 			// Chop a half log
 			else if (playerPath.StartsWith("axe-") && !sneak && itemStack?.Collectible is BlockLogHalf blockHalfLogToChop)
 			{
-				playerStack.Collectible.DamageItem(Api.World, byPlayer.Entity, playerSlot, 5);
+				playerStack.Collectible.DamageItem(Api.World, byPlayer.Entity, playerSlot, chopCost);
 				blockHalfLogToChop.SpawnBlockBrokenParticles(blockSel.Position);
 				Api.World.PlaySoundAt(logSound, blockSel.Position.X, blockSel.Position.Y, blockSel.Position.Z, byPlayer);
 				ToggleContentState();
@@ -146,7 +157,7 @@ namespace StoneRoad
 				Block blockToChop = itemStack.Collectible as Block;
 				if (blockToChop != null)
 					wood = blockToChop.Variant["wood"];
-				playerStack.Collectible.DamageItem(this.Api.World, byPlayer.Entity, playerSlot, 5);
+				playerStack.Collectible.DamageItem(this.Api.World, byPlayer.Entity, playerSlot, chopCost);
 				blockToChop?.SpawnBlockBrokenParticles(blockSel.Position);
 				Api.World.PlaySoundAt(logSound, blockSel.Position.X, blockSel.Position.Y, blockSel.Position.Z, byPlayer);
 				ToggleContentState();
@@ -161,7 +172,7 @@ namespace StoneRoad
 			// Chop (either) firewood into sticks
 			else if ( (playerPath.StartsWith("axe-") || playerPath.StartsWith("adze-") || playerPath.StartsWith("knife-") ) && blockPath.StartsWith("firewood"))
 			{
-				playerStack.Collectible.DamageItem(this.Api.World, byPlayer.Entity, playerSlot, 3);
+				playerStack.Collectible.DamageItem(this.Api.World, byPlayer.Entity, playerSlot, firewoodCost);
 				Api.World.PlaySoundAt(logSound, blockSel.Position.X, blockSel.Position.Y, blockSel.Position.Z, byPlayer);
 				ToggleContentState();
 				Item dropItem = Api.World.GetItem(new AssetLocation("stick"));
@@ -180,7 +191,7 @@ namespace StoneRoad
 			)
 			{
 				string wood = blockLogToStrip.Variant["wood"];
-				playerStack.Collectible.DamageItem(Api.World, byPlayer.Entity, playerSlot, 3);
+				playerStack.Collectible.DamageItem(Api.World, byPlayer.Entity, playerSlot, stripCost);
 				blockLogToStrip.SpawnBlockBrokenParticles(blockSel.Position);
 				Api.World.PlaySoundAt(blockLogToStrip.Sounds?.GetBreakSound(byPlayer), this.Pos.X, this.Pos.Y, this.Pos.Z, byPlayer);
 				ToggleContentState();
@@ -206,7 +217,7 @@ namespace StoneRoad
 			)
 			{
 				string wood = blockHalfLogToStrip.Variant["wood"];
-				playerStack.Collectible.DamageItem(Api.World, byPlayer.Entity, playerSlot, 5);
+				playerStack.Collectible.DamageItem(Api.World, byPlayer.Entity, playerSlot, stripCost);
 				blockHalfLogToStrip.SpawnBlockBrokenParticles(blockSel.Position);
 				Api.World.PlaySoundAt(logSound, blockSel.Position.X, blockSel.Position.Y, blockSel.Position.Z, byPlayer);
 				ToggleContentState();

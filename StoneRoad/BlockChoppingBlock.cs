@@ -11,6 +11,10 @@ namespace StoneRoad
 {
 	public class BlockChoppingBlock : Block
 	{
+		public StoneRoadMod SRMod;
+		public int AxeChopLogCost;
+		public int AxeStripLogCost;
+		public int AxeSplitFirewoodCost;
 
 		/*
 		public override WorldInteraction[] GetPlacedBlockInteractionHelp(IWorldAccessor world, BlockSelection selection, IPlayer forPlayer)
@@ -25,6 +29,25 @@ namespace StoneRoad
 			});
 		}
 		*/
+
+		public override void OnLoaded(ICoreAPI api)
+		{
+			base.OnLoaded(api);
+
+			//hard - coded defaults, but config defaults should always exist
+			AxeChopLogCost = 4;
+			AxeStripLogCost = 4;
+			AxeSplitFirewoodCost = 2;
+
+			// these are re-read OnLoaded because mod config may have been changed by player
+			SRMod = api.ModLoader.GetModSystem<StoneRoadMod>();
+			if (SRMod != null && SRMod.Config != null)
+			{
+				AxeChopLogCost = SRMod.Config.AxeChopLogCost;
+				AxeStripLogCost = SRMod.Config.AxeStripLogCost;
+				AxeSplitFirewoodCost = SRMod.Config.AxeSplitFirewoodCost;
+			}
+		}
 
 		public MeshData GenMesh(ICoreClientAPI capi, ITexPositionSource texture)
 		{
