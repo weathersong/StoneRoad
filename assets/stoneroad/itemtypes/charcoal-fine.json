@@ -10,7 +10,7 @@
   },
   "combustibleProps": {
     "burnDuration": 60,
-    "burnTemperature": 1000
+    "burnTemperature": 1005
   },
   "creativeinventory": {
     "general": [ "*" ],
