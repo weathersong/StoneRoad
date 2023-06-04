@@ -56,6 +56,15 @@ namespace StoneRoad
 			if (itemStack != null && itemStack.Collectible != null)
 				blockPath = itemStack.Collectible.Code.Path;
 
+			bool playerAxe = playerPath.StartsWith("axe-");
+			bool playerAxeOrAdze = playerAxe || playerPath.StartsWith("adze-");
+			bool playerLog = playerPath.StartsWith("log-") || playerPath.StartsWith("logsection-");
+			bool blockLog = blockPath.StartsWith("log-") || blockPath.StartsWith("logsection-");
+			bool playerLogHalf = playerStack?.Collectible is BlockLogHalf;
+			bool playerDebarkedLog = playerPath.StartsWith("debarkedlog-");
+			bool blockDebarkedLog = blockPath.StartsWith("debarkedlog-");
+			bool playerFirewood = playerPath.StartsWith("firewood");
+			bool blockFirewood = blockPath.StartsWith("firewood");
 			bool sneak = byPlayer.Entity.Controls.Sneak;
 
 			int chopCost = 4;
@@ -69,7 +78,7 @@ namespace StoneRoad
 			}
 
 			// Place down a log for chopping
-			if (playerPath.StartsWith("log-") && IsInventoryEmpty)
+			if (playerLog && IsInventoryEmpty)
 			{
 				Api.World.PlaySoundAt(logSound, blockSel.Position.X, blockSel.Position.Y, blockSel.Position.Z, byPlayer);
 
@@ -79,7 +88,7 @@ namespace StoneRoad
 			}
 
 			// Place down a halflog
-			else if (playerStack?.Collectible is BlockLogHalf && IsInventoryEmpty)
+			else if (playerLogHalf && IsInventoryEmpty)
 			{
 				Api.World.PlaySoundAt(logSound, blockSel.Position.X, blockSel.Position.Y, blockSel.Position.Z, byPlayer);
 
@@ -90,7 +99,7 @@ namespace StoneRoad
 
 			// Place down a stripped log
 			// 1.18: debarkedlog- instead of strippedlog-
-			else if (playerPath.StartsWith("debarkedlog-") && IsInventoryEmpty)
+			else if (playerDebarkedLog && IsInventoryEmpty)
 			{
 				Api.World.PlaySoundAt(logSound, blockSel.Position.X, blockSel.Position.Y, blockSel.Position.Z, byPlayer);
 
@@ -100,7 +109,7 @@ namespace StoneRoad
 			}
 
 			// Place down firewood
-			else if (playerPath.StartsWith("firewood") && IsInventoryEmpty)
+			else if (playerFirewood && IsInventoryEmpty)
 			{
 				Api.World.PlaySoundAt(logSound, blockSel.Position.X, blockSel.Position.Y, blockSel.Position.Z, byPlayer);
 
@@ -110,20 +119,25 @@ namespace StoneRoad
 			}
 
 			// Chop a placed log
-			else if (playerPath.StartsWith("axe-") && !sneak && blockPath.StartsWith("log-") && itemStack?.Collectible is BlockLog blockLogToChop)
+			else if (playerAxe && !sneak && blockLog)
 			{
-				// what wood type is it?
-				//string wood = blockToChop.Attributes["wood"].ToString(); // Code.Path = log-placed-larch-ud
-				string wood = blockLogToChop.Variant["wood"];
-				// damage axe
-				playerStack.Collectible.DamageItem(Api.World, byPlayer.Entity, playerSlot, chopCost);
-				// particles
-				blockLogToChop.SpawnBlockBrokenParticles(blockSel.Position);
-				// sound
-				Api.World.PlaySoundAt(blockLogToChop.Sounds?.GetBreakSound(byPlayer), this.Pos.X, this.Pos.Y, this.Pos.Z, byPlayer);
+				string wood = "";
+				if (itemStack?.Collectible is BlockLog blockLogToChop)
+				{
+					wood = blockLogToChop.Variant["wood"];
+					playerStack.Collectible.DamageItem(Api.World, byPlayer.Entity, playerSlot, chopCost);
+					blockLogToChop.SpawnBlockBrokenParticles(blockSel.Position);
+					Api.World.PlaySoundAt(blockLogToChop.Sounds?.GetBreakSound(byPlayer), this.Pos.X, this.Pos.Y, this.Pos.Z, byPlayer);
+				}
+				else if (itemStack?.Collectible is BlockLogSection blockLogSectionToChop)
+				{
+					wood = blockLogSectionToChop.Variant["wood"];
+					playerStack.Collectible.DamageItem(Api.World, byPlayer.Entity, playerSlot, chopCost);
+					blockLogSectionToChop.SpawnBlockBrokenParticles(blockSel.Position);
+					Api.World.PlaySoundAt(blockLogSectionToChop.Sounds?.GetBreakSound(byPlayer), this.Pos.X, this.Pos.Y, this.Pos.Z, byPlayer);
+				}
 				// swap to empty block - this also empties inventory
 				ToggleContentState();
-				//inventory[0].TakeOutWhole();
 				// drop halves
 				Block dropBlock = Api.World.GetBlock(new AssetLocation("stoneroad", $"loghalf-{wood}-north"));
 				if (dropBlock != null)
@@ -134,7 +148,7 @@ namespace StoneRoad
 			}
 
 			// Chop a half log
-			else if (playerPath.StartsWith("axe-") && !sneak && itemStack?.Collectible is BlockLogHalf blockHalfLogToChop)
+			else if (playerAxe && !sneak && itemStack?.Collectible is BlockLogHalf blockHalfLogToChop)
 			{
 				playerStack.Collectible.DamageItem(Api.World, byPlayer.Entity, playerSlot, chopCost);
 				blockHalfLogToChop.SpawnBlockBrokenParticles(blockSel.Position);
@@ -151,7 +165,7 @@ namespace StoneRoad
 
 			// Chop a stripped log
 			// 1.18: using vanilla debarkedlog- instead of AncientTools strippedlog-
-			else if (playerPath.StartsWith("axe-") && !sneak && blockPath.StartsWith("debarkedlog-"))
+			else if (playerAxe && !sneak && blockDebarkedLog)
 			{
 				string wood = "";
 				Block blockToChop = itemStack.Collectible as Block;
@@ -170,7 +184,7 @@ namespace StoneRoad
 			}
 
 			// Chop (either) firewood into sticks
-			else if ( (playerPath.StartsWith("axe-") || playerPath.StartsWith("adze-") || playerPath.StartsWith("knife-") ) && blockPath.StartsWith("firewood"))
+			else if ( (playerAxeOrAdze || playerPath.StartsWith("knife-") ) && blockFirewood)
 			{
 				playerStack.Collectible.DamageItem(this.Api.World, byPlayer.Entity, playerSlot, firewoodCost);
 				Api.World.PlaySoundAt(logSound, blockSel.Position.X, blockSel.Position.Y, blockSel.Position.Z, byPlayer);
@@ -185,15 +199,23 @@ namespace StoneRoad
 
 			// Strip a log
 			// 1.18: This no longer depends on the adze (Ancient Tools), but is left in for future compatibility
-			else if (
-				( (playerPath.StartsWith("axe-") && sneak) || playerPath.StartsWith("adze-") ) &&
-				blockPath.StartsWith("log-") && itemStack?.Collectible is BlockLog blockLogToStrip
-			)
+			else if (playerAxeOrAdze && blockLog)
 			{
-				string wood = blockLogToStrip.Variant["wood"];
-				playerStack.Collectible.DamageItem(Api.World, byPlayer.Entity, playerSlot, stripCost);
-				blockLogToStrip.SpawnBlockBrokenParticles(blockSel.Position);
-				Api.World.PlaySoundAt(blockLogToStrip.Sounds?.GetBreakSound(byPlayer), this.Pos.X, this.Pos.Y, this.Pos.Z, byPlayer);
+				string wood = "";
+				if (itemStack?.Collectible is BlockLog blockLogToStrip)
+				{
+					wood = blockLogToStrip.Variant["wood"];
+					playerStack.Collectible.DamageItem(Api.World, byPlayer.Entity, playerSlot, stripCost);
+					blockLogToStrip.SpawnBlockBrokenParticles(blockSel.Position);
+					Api.World.PlaySoundAt(blockLogToStrip.Sounds?.GetBreakSound(byPlayer), this.Pos.X, this.Pos.Y, this.Pos.Z, byPlayer);
+				}
+				else if (itemStack?.Collectible is BlockLogSection blockLogSectionToStrip)
+				{
+					wood = blockLogSectionToStrip.Variant["wood"];
+					playerStack.Collectible.DamageItem(Api.World, byPlayer.Entity, playerSlot, stripCost);
+					blockLogSectionToStrip.SpawnBlockBrokenParticles(blockSel.Position);
+					Api.World.PlaySoundAt(blockLogSectionToStrip.Sounds?.GetBreakSound(byPlayer), this.Pos.X, this.Pos.Y, this.Pos.Z, byPlayer);
+				}
 				ToggleContentState();
 				// drop bark if possible
 				Item dropItem = Api.World.GetItem(new AssetLocation($"{wood}bark")) ?? Api.World.GetItem(new AssetLocation("ancienttools", $"bark-{wood}"));
@@ -211,10 +233,7 @@ namespace StoneRoad
 
 			// Strip a half log
 			// 1.18: Also decoupled from Ancient Tools
-			else if (
-				( (playerPath.StartsWith("axe-") && sneak) || playerPath.StartsWith("adze-") ) &&
-				itemStack?.Collectible is BlockLogHalf blockHalfLogToStrip
-			)
+			else if (playerAxeOrAdze && itemStack?.Collectible is BlockLogHalf blockHalfLogToStrip)
 			{
 				string wood = blockHalfLogToStrip.Variant["wood"];
 				playerStack.Collectible.DamageItem(Api.World, byPlayer.Entity, playerSlot, stripCost);
@@ -344,7 +363,7 @@ namespace StoneRoad
 
 			mesh?.RenderPassesAndExtraBits.Fill((short)EnumChunkRenderPass.BlendNoCull);
 
-			if (lumberSlot.Collectible is BlockLog)
+			if (lumberSlot.Collectible is BlockLog || lumberSlot.Collectible is BlockLogSection)
 			{
 				mesh.Rotate(new Vec3f(0f, 0f, 0f), 0, 5 * GameMath.DEG2RAD, 0);
 				mesh.Translate(-0.05f, 0.33f, 0f);
