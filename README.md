@@ -6,7 +6,8 @@ Roughly, here are the changes and the progression path to copper age:
 ***
 
 * **Wood is no longer chopped in the grid to produce firewood.**
-Instead, make a chopping block, using an axe and knife and log. Set it down, then load it by holding a log in hands and right-clicking. With an axe, *right-click* to chop the log, or hold sneak and right-click to debark the log.
+Instead, first make a chopping block, using an axe and knife and log, vertically in that order, in the crafting grid.
+Set it on the ground, then load it by holding a log in hands and right-clicking. With an axe, *right-click* to chop the log, or hold sneak and right-click to debark the log.
 Depending on which is used, this produces firewood, bark, and *lumber*. You may also further chop firewood into sticks, as a convenience.
 There is no longer a recipe to saw logs into planks, so this is the only path toward producing them.
 
@@ -21,7 +22,7 @@ to convert the warped lumber into regular, vanilla boards. This completely circu
 * **Crucible creation process extended.**
 No longer just clay-formed and fired, you must first shape the raw clay form (using *only* fire clay), then treat it in a limewater solution, in a barrel.
 The treated clay form is then dried, and must then be loaded with *superior* charcoal before it can finally be fired.
-(This series of steps is meant to represent the sum total of the mod's changes, hence the barrel and the superior charcoal. But also locating the uncommon elements of fire clay and limestone in the world.)
+(This series of steps is meant to represent the sum total of the mod's changes, hence the barrel and the superior charcoal. But also it forces the locating of the uncommon elements of fire clay and limestone in the world.)
 And speaking of charcoal...
 
 * **Firewood and charcoal don't burn as hot.**
@@ -31,7 +32,8 @@ Charcoal pits work roughly the same, and making a vanilla-style pit still works,
 To produce higher quality charcoal, a bed of charcoal must be laid down, and *aged* firewood placed atop it.
 The rule here is that one higher tier of charcoal is produced than the bed, so a block of poor charcoal under a block of aged firewood converts the firewood into regular quality charcoal.
 Dig out that charcoal pile and the poor charcoal (unconverted) beneath it, and lay down the regular charcoal as the bed. Place aged firewood atop it, and cook again. This time, fine charcoal is the result. And then once more for superior.
-The cook time for charcoal now defaults to 60 hours, though this can be configured. Keep this duration (*times the number of upgrade steps, plus aging more firewood each time*) in mind when planning your initial settlement!
+A mod config option allows for skipping past fine, so that the process is reduced to two cook cycles: poor -> regular -> superior.
+The cook time for charcoal defaults to 60 hours, though this can also be configured. Keep this duration (*times the number of upgrade steps, plus aging more firewood each time*) in mind when planning your initial settlement!
 
 ***
 
@@ -54,6 +56,6 @@ And finally, it's something you don't necessarily need to carry with you, and co
 
 ## Final Notes
 This mod isn't generally designed for public use, but is public here to act as a useful example of several types of systems. It has had a fair amount of testing in-game, but may still be buggy.
-Stone Road is currently (only) compatible and tested with game version 1.19. (Previous versions here on Git depended on Ancient Tools.)
+This version of Stone Road is compatible and tested with game version 1.21.
 
-Some of the code is also adapted from Primitive Survival (or the game's own files), but has been pretty extensively modified to suit the mod's own function.
+Some of the oldest bits of code were adapted from Primitive Survival (or the game's own files), but overall it has been pretty extensively modified to suit my own design goals.
