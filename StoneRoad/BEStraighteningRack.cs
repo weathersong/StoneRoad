@@ -447,7 +447,7 @@ namespace StoneRoad
 				mesh.Translate(
 					-0.8125f + (0.0625f * (index / 6)) + (index % 6 * 0.125f), // spacing is regular but the offset is different for lower and upper racks
 					0f + (0.3125f * (index / 6)), // upper rack is 5/16ths above the lower
-					0f
+					0.025f
 				);
 
 				//mesh.Scale(new Vec3f(0.5f, 0, 0.5f), 1f, 1f, 1f);

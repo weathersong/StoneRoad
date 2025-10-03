@@ -54,6 +54,6 @@ And finally, it's something you don't necessarily need to carry with you, and co
 
 ## Final Notes
 This mod isn't generally designed for public use, but is public here to act as a useful example of several types of systems. It has had a fair amount of testing in-game, but may still be buggy.
-Stone Road is currently *only* compatible with game version 1.18, which adds debarked logs. (Previous versions here on Git depended on Ancient Tools, which had its own stripped logs.)
+Stone Road is currently (only) compatible and tested with game version 1.19. (Previous versions here on Git depended on Ancient Tools.)
 
 Some of the code is also adapted from Primitive Survival (or the game's own files), but has been pretty extensively modified to suit the mod's own function.

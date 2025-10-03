@@ -8,9 +8,9 @@ EndProject
 Project("{911E67C6-3D85-4FCE-B560-20A9C3E3FF48}") = "Vintagestory", "C:\Vintagestory\Vintagestory.exe", "{AD395F58-FA2A-4663-845C-7EF65FA4C7B9}"
 	ProjectSection(DebuggerProjectSystem) = preProject
 		PortSupplier = 00000000-0000-0000-0000-000000000000
-		Executable = C:\Vintagestory\Vintagestory.exe
+		Executable = C:\Users\David\AppData\Roaming\Vintagestory\Vintagestory.exe
 		RemoteMachine = TEG
-		StartingDirectory = C:\Vintagestory
+		StartingDirectory = C:\Users\David\AppData\Roaming\Vintagestory
 		Arguments = -oTestStoneRoad -pcreativebuilding --addModPath="D:\Games\Vintage Story\_ Builds"
 		Environment = Default
 		LaunchingEngine = 00000000-0000-0000-0000-000000000000

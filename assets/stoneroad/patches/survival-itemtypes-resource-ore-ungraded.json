@@ -1,0 +1,8 @@
+[
+  {
+    "op": "replace",
+    "path": "/combustiblePropsByType/ore-lignite/burnTemperature",
+    "value": 900,
+    "file": "game:itemtypes/resource/ore-ungraded.json"
+  }
+]

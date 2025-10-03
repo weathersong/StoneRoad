@@ -72,6 +72,11 @@ namespace StoneRoad
 		{
 			return interactions.Append(base.GetPlacedBlockInteractionHelp(world, selection, forPlayer));
 		}
+
+		public EnumIgniteState OnTryIgniteStack(EntityAgent byEntity, BlockPos pos, ItemSlot slot, float secondsIgniting)
+		{
+			throw new NotImplementedException();
+		}
 	}
 
 }

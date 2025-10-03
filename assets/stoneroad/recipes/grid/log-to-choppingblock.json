@@ -9,5 +9,17 @@
 		"width": 1,
 		"height": 3,
 		"output": { "type": "block", "code": "choppingblock-{wood}-empty-north", "quantity": 2 }
+	},
+	{
+		"ingredientPattern": "A,K,L",
+		"ingredients": {
+			"A": { "type": "item", "code": "toolworks:axe-*", "isTool": true, "toolDurabilityCost": 5 },
+			"K": { "type": "item", "code": "toolworks:knife-*", "isTool": true, "toolDurabilityCost": 10 },
+			"L": { "type": "block", "code": "game:log-placed-*-ud", "name": "wood" }
+		},
+		"width": 1,
+		"height": 3,
+    "output": { "type": "block", "code": "choppingblock-{wood}-empty-north", "quantity": 2 },
+    "dependsOn": [{ "modid": "toolworks" }]
 	}
 ]

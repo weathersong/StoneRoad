@@ -13,6 +13,7 @@ namespace StoneRoad
 		public int LumberStraighteningCurePctChance;
 
 		public float CharcoalPitBurnHours;
+		public bool CharcoalSkipFine;
 
 		public int AxeChopLogCost;
 		public int AxeStripLogCost;
@@ -34,6 +35,7 @@ namespace StoneRoad
 			LumberStraighteningCurePctChance = 60;
 
 			CharcoalPitBurnHours = 60;
+			CharcoalSkipFine = false;
 
 			AxeChopLogCost = 4;
 			AxeStripLogCost = 4;

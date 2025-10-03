@@ -243,7 +243,12 @@ namespace StoneRoad
 											charcoalBlock = Api.World.GetBlock(new AssetLocation("charcoalpile-" + GameMath.Clamp(charCoalQuantity, 1, 8)));
 										// standard/vanilla bedding = fine quality
 										else if (coalItemPath == "charcoal")
-											charcoalBlock = Api.World.GetBlock(new AssetLocation("stoneroad", "charcoalpile-fine-" + GameMath.Clamp(charCoalQuantity, 1, 8)));
+										{
+											if (srMod.Config.CharcoalSkipFine)
+												charcoalBlock = Api.World.GetBlock(new AssetLocation("stoneroad", "charcoalpile-superior-" + GameMath.Clamp(charCoalQuantity, 1, 8)));
+											else
+												charcoalBlock = Api.World.GetBlock(new AssetLocation("stoneroad", "charcoalpile-fine-" + GameMath.Clamp(charCoalQuantity, 1, 8)));
+										}
 										// fine / superior bedding = superior quality
 										else if (coalItemPath == "charcoal-fine" || coalItemPath == "charcoal-superior")
 											charcoalBlock = Api.World.GetBlock(new AssetLocation("stoneroad", "charcoalpile-superior-" + GameMath.Clamp(charCoalQuantity, 1, 8)));

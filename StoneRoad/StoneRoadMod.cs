@@ -14,7 +14,7 @@ namespace StoneRoad
 	public class StoneRoadMod : ModSystem
 	{
 
-		const string LogHeader = "STONE_ROAD_1_1";
+		const string LogHeader = "STONE_ROAD_2_2";
 		const string ConfigFilename = "StoneRoadConfig.json";
 
 		private ICoreAPI CoreApi;
@@ -148,7 +148,7 @@ namespace StoneRoad
 
 		public void LogDebug(string msg)
 		{
-			if (Config.DebugLogging)
+			if (Config == null || Config.DebugLogging)
 				CoreApi?.Logger.Debug($"[{LogHeader}] {msg}");
 		}
 

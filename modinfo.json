@@ -4,9 +4,9 @@
   "name": "The Stone Road",
   "authors": ["weathersong"],
   "description": "Several changes to increase the difficulty of reaching copper age, and make stone age more livable.",
-  "version": "1.1.0",
+  "version": "1.2.2",
   "dependencies": {
-    "game": "1.18.1"
+    "game": "1.21.1"
   },
   "website": "https://www.vintagestory.at/"
 }

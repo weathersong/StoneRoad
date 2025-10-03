@@ -165,5 +165,9 @@ namespace StoneRoad
 			return base.GetPlacedBlockInfo(world, pos, forPlayer);
 		}
 
+		public EnumIgniteState OnTryIgniteStack(EntityAgent byEntity, BlockPos pos, ItemSlot slot, float secondsIgniting)
+		{
+			throw new NotImplementedException();
+		}
 	}
 }

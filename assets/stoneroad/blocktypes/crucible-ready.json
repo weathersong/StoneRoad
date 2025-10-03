@@ -109,7 +109,7 @@
     "smeltingType": "fire",
     "smeltedStack": {
       "type": "block",
-      "code": "game:crucible-burned"
+      "code": "game:crucible-fire-fired"
     },
     "requiresContainer": false
   }
