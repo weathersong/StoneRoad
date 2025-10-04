@@ -8,16 +8,5 @@
     "width": 2,
     "height": 1,
     "output": { "type": "block", "code": "woodbowl" }
-  },
-  {
-    "ingredientPattern": "PK",
-    "ingredients": {
-      "P": { "type": "block", "code": "game:pan-wooden" },
-      "K": { "type": "item", "code": "toolworks:knife-*", "isTool": true }
-    },
-    "width": 2,
-    "height": 1,
-    "output": { "type": "block", "code": "woodbowl" },
-    "dependsOn": [{ "modid": "toolworks" }]
   }
 ]
